@@ -2,13 +2,22 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
-/[Ll]ibrary/
-/[Tt]emp/
-/[Oo]bj/
+
+###
+# Unity folders and files
+###
+/[Aa]ssets/AssetStoreTools*
 /[Bb]uild/
-/[Bb]uilds/
+/[Ll]ibrary/
+/[Ll]ocal[Cc]ache/
+/[Oo]bj/
 /[Ll]ogs/
-/[Uu]ser[Ss]ettings/
+/[Tt]emp/
+/[Uu]nityGenerated/
+# file on crash reports
+sysinfo.txt
+# Unity3D generated meta files
+*.pidb.meta
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
@@ -25,6 +34,7 @@
 
 # Visual Studio cache directory
 .vs/
+*.vsidx
 
 # Gradle cache directory
 .gradle/
