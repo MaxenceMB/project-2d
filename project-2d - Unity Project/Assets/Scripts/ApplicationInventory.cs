@@ -5,13 +5,12 @@ using UnityEngine;
 
 public class ApplicationInventory : MonoBehaviour
 {
-    // Start is called before the first frame update
-void Start(){
-    main();
-}
+    void Start(){
+        main();
+    }
 
     void main(){
-        Inventory inv = new Inventory(5);
+        Inventory inv = new Inventory();
         Item pioche = new Item("pioche", "test");
         Item fortniteBattlepass = new Item("Battle pass Fortnite", "test2");
         Item potion = new Item("Potion de soins", "test3");

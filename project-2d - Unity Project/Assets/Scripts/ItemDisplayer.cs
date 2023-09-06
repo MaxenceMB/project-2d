@@ -16,7 +16,9 @@ public class ItemDisplayer : MonoBehaviour
     void Start(){
         icon = item.getIcon();
         spriteRenderer.sprite = icon;
-        spriteRenderer.enabled = true;
     }
 
+    public Item GetItem(){
+        return item;
+    }
 }

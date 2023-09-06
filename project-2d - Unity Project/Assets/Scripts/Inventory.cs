@@ -5,14 +5,14 @@ using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
 
-public class Inventory {
+public class Inventory : MonoBehaviour {
 
-    private int maxSlots = 5;
+    private int maxSlots;
     private List<Item> items;
     private List<int> quantityOfItems;
 
-    public Inventory(int maxSlots){
-        this.maxSlots = maxSlots;
+    private void Start(){
+        this.maxSlots = 10;
         this.items = new List<Item>();
         this.quantityOfItems = new List<int>();
     }
