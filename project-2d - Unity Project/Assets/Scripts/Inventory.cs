@@ -9,12 +9,10 @@ public class Inventory : MonoBehaviour {
 
     private int maxSlots;
     private List<Item> items;
-    private List<int> quantityOfItems;
 
     private void Start(){
         this.maxSlots = 10;
         this.items = new List<Item>();
-        this.quantityOfItems = new List<int>();
     }
 
     public void AddItem(Item item, int quantity = 1){
@@ -25,13 +23,13 @@ public class Inventory : MonoBehaviour {
         // End exceptions
 
         if (this.items.Contains(item)){
-            this.quantityOfItems[this.items.IndexOf(item)] += 1;
+            this.items[this.items.IndexOf(item)].AddQuantity(quantity);
         } else {
             this.items.Add(item);
-            this.quantityOfItems.Add(quantity);
+            this.items[this.items.IndexOf(item)].AddQuantity(quantity);
         }
     }
-
+/*
     public void RemoveItemAt(int index, int quantity = 1){
         // Exceptions
         if (index < 0 || index >= this.items.Count){
@@ -72,12 +70,12 @@ public class Inventory : MonoBehaviour {
     public void clearInventory(){
         this.items.Clear();
         this.quantityOfItems.Clear();
-    }
+    }*/
 
     public override string ToString(){
         string str = "Inventory : [\n";
         for (int i = 0; i < this.items.Count; i++){
-            str += "Slot " + (i+1) + " : " + this.items[i].getName() + " (" + this.quantityOfItems[i] + ")\n";
+            str += "Slot " + (i+1) + " : " + this.items[i].getName() + " (" + this.items[i].getQuantity() + ")\n";
         }
         str += "]";
         return str;

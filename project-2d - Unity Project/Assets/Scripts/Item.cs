@@ -8,10 +8,10 @@ public class Item : ScriptableObject
     [SerializeField] private string itemName;
     [SerializeField] private string description;
     [SerializeField] private Sprite icon;
+    [SerializeField] private int quantity;
 
-    public Item(string name, string description){
-        this.itemName = name;
-        this.description = description;
+    public void OnEnable(){
+        this.quantity = 0;
     }
 
     public string getName(){
@@ -24,5 +24,17 @@ public class Item : ScriptableObject
 
     public Sprite getIcon(){
         return this.icon;
+    }
+
+    public int getQuantity(){
+        return this.quantity;
+    }
+
+    public void AddQuantity(int quantity = 1){
+        this.quantity += quantity;
+    }
+
+    public void RemoveQuantity(int quantity = 1){
+        this.quantity -= quantity;
     }
 }

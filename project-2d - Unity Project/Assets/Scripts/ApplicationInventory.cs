@@ -9,7 +9,7 @@ public class ApplicationInventory : MonoBehaviour
         main();
     }
 
-    void main(){
+    void main(){/*
         Inventory inv = new Inventory();
         Item pioche = new Item("pioche", "test");
         Item fortniteBattlepass = new Item("Battle pass Fortnite", "test2");
@@ -32,6 +32,6 @@ public class ApplicationInventory : MonoBehaviour
         inv.RemoveItem(pioche);
         Debug.Log(inv.ToString());
         inv.RemoveItem(pioche, 2);
-        Debug.Log(inv.ToString());
+        Debug.Log(inv.ToString());*/
     }
 }
