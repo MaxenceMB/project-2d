@@ -10,14 +10,12 @@ public class ItemDisplayer : MonoBehaviour
 
     public string itemName;
     public string description;
-    public int quantity;
 
     private Sprite icon;
 
     void Start(){
-        icon = item.getIcon();
+        icon = item.icon;
         spriteRenderer.sprite = icon;
-        this.quantity = item.getQuantity();
     }
 
     public Item GetItem(){

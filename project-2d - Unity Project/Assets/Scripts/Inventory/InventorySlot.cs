@@ -15,7 +15,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler {
             InventoryItem inventoryItem = eventData.pointerDrag.GetComponent<InventoryItem>();
 
             //currentSlotItem.parentAfterDrag = inventoryItem.transform;
-            currentSlotItem.transform.SetParent(inventoryItem.parentBeforeDrag);
+            currentSlotItem.transform.SetParent(inventoryItem.parentAfterDrag);
             inventoryItem.parentAfterDrag = transform;
         }
     }

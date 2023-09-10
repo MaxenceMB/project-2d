@@ -6,15 +6,15 @@ using JetBrains.Annotations;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour {
-
+/*
     private int maxSlots;
     private List<Item> items;
 
     private void Start(){
         this.maxSlots = 10;
         this.items = new List<Item>();
-    }
-
+    }*/
+/*
     public void AddItem(Item item, int quantity = 1){
         // Exception
         if (this.items.Count == maxSlots){
@@ -28,7 +28,7 @@ public class Inventory : MonoBehaviour {
             this.items.Add(item);
             this.items[this.items.IndexOf(item)].AddQuantity(quantity);
         }
-    }
+    }*/
 
 /*
     public void RemoveItemAt(int index, int quantity = 1){
@@ -72,7 +72,7 @@ public class Inventory : MonoBehaviour {
         this.items.Clear();
         this.quantityOfItems.Clear();
     }*/
-
+/*
     public override string ToString(){
         string str = "Inventory : [\n";
         for (int i = 0; i < this.items.Count; i++){
@@ -80,6 +80,5 @@ public class Inventory : MonoBehaviour {
         }
         str += "]";
         return str;
-    }
-
+    }*/
 }
