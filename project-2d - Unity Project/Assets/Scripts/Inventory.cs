@@ -29,6 +29,7 @@ public class Inventory : MonoBehaviour {
             this.items[this.items.IndexOf(item)].AddQuantity(quantity);
         }
     }
+
 /*
     public void RemoveItemAt(int index, int quantity = 1){
         // Exceptions

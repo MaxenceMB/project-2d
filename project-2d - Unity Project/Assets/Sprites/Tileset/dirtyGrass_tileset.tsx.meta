@@ -9,7 +9,10 @@ ScriptedImporter:
   assetBundleVariant: 
   script: {fileID: 11500000, guid: cc34d0f3dc257a442819830b408c5322, type: 3}
   missingFiles: []
-  errors: []
+  errors:
+  - Mismatching width/height detected. Tileset = (240, 224), image = (240, 270).
+    This may happen when a tileset image has been resized. Open map and tileset in
+    Tiled Map Editor and resave.
   warnings: []
   missingSortingLayers: []
   missingLayers: []
@@ -17,7 +20,7 @@ ScriptedImporter:
   importerVersion: 13
   pixelsPerUnit: 16
   edgesPerEllipse: 32
-  numberOfObjectsImported: 422
+  numberOfObjectsImported: 2
   useSpriteAtlas: 0
   atlasWidth: 2048
   atlasHeight: 2048
