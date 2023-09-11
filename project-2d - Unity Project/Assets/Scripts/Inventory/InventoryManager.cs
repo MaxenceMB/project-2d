@@ -24,6 +24,15 @@ public class InventoryManager : MonoBehaviour {
         }
     }
 
+    public void Update(){
+        if(Input.inputString != null){
+            bool isNumber = int.TryParse(Input.inputString, out int number);
+            if (isNumber && (number >= 0 && number <= 9)){
+                ChangeSelectedSlot(number - 1);
+            }
+        }
+    }
+
     public bool AddItem(Item item){
         for (int i = 0; i < inventorySlots.Length; i++){
             InventoryItem itemInSlot = inventorySlots[i].GetComponentInChildren<InventoryItem>();
