@@ -8,7 +8,7 @@ public class PickingUpItem : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.CompareTag("PickableItem")){
-            playerInventory.AddItem(other.gameObject.GetComponent<ItemDisplayer>().GetItem());
+            playerInventory.AddItem(other.gameObject.GetComponent<ItemDisplayer>().item);
             Destroy(other.gameObject);
         }
     }

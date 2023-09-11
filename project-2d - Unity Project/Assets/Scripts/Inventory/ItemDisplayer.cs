@@ -11,11 +11,8 @@ public class ItemDisplayer : MonoBehaviour
     public string itemName;
     public string description;
 
-    private Sprite icon;
-
     void Start(){
-        icon = item.icon;
-        spriteRenderer.sprite = icon;
+        spriteRenderer.sprite = item.icon;
     }
 
     public Item GetItem(){
