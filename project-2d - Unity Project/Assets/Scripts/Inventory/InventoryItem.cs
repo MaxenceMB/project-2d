@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler {
 
     public Image image;
+    public TMP_Text quantityText;
 
     [HideInInspector] public Item item;
     [HideInInspector] public Transform parentAfterDrag;
+    [HideInInspector] public int quantity = 1;
 
     private void Start() {
         InitialiseItem(item);
@@ -18,6 +21,13 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public void InitialiseItem(Item newItem){
         item = newItem;
         image.sprite = newItem.icon;
+        RefreshText();
+    }
+
+    public void RefreshText(){
+        quantityText.text = quantity.ToString();
+        bool showQuantity = quantity > 1;
+        quantityText.gameObject.SetActive(showQuantity);
     }
 
     public void OnBeginDrag(PointerEventData eventData)

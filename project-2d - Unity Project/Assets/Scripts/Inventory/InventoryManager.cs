@@ -2,15 +2,40 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour {
 
+    public static int MAX_STACK_SIZE = 10;
+
     public InventorySlot[] inventorySlots;
     public GameObject inventoryItemPrefab;
-    
+
+    public int selectedSlot = -1;
+
+    private void Start() {
+        Debug.Log(inventorySlots.Length);
+        ChangeSelectedSlot(1);
+    }
+
+    public void ChangeSelectedSlot(int newSelectedSlot){
+        if (selectedSlot >= 0 && selectedSlot < inventorySlots.Length){
+            inventorySlots[selectedSlot].Deselect();
+            inventorySlots[newSelectedSlot].Select();
+            selectedSlot = newSelectedSlot;
+        }
+    }
+
     public void AddItem(Item item){
         for (int i = 0; i < inventorySlots.Length; i++){
-            if (inventorySlots[i].GetComponent<InventoryItem>() == null){
+            InventoryItem itemInSlot = inventorySlots[i].GetComponentInChildren<InventoryItem>();
+            if (itemInSlot != null
+                && itemInSlot.item == item
+                && itemInSlot.quantity < MAX_STACK_SIZE
+                && itemInSlot.item.stackable){
+                itemInSlot.quantity++;
+                itemInSlot.RefreshText();
+                return;
+            } else if (itemInSlot == null) {
                 SpawnNewItem(item, inventorySlots[i]);
                 return;
-            }
+            } 
         }
     }
 
