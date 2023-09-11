@@ -29,7 +29,14 @@ public class InventoryManager : MonoBehaviour {
             bool isNumber = int.TryParse(Input.inputString, out int number);
             if (isNumber && (number >= 0 && number <= 9)){
                 ChangeSelectedSlot(number - 1);
+                selectedSlot = number - 1;
             }
+        }
+        if (Input.GetAxis("Mouse ScrollWheel") > 0f){
+            ChangeSelectedSlot(Mathf.Max(selectedSlot - 1, 0));
+        }
+        if (Input.GetAxis("Mouse ScrollWheel") < 0f){
+            ChangeSelectedSlot(Mathf.Min(selectedSlot + 1, 4));
         }
     }
 
