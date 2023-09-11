@@ -11,12 +11,14 @@ public class InventoryManager : MonoBehaviour {
 
     private void Start() {
         Debug.Log(inventorySlots.Length);
-        ChangeSelectedSlot(1);
+        ChangeSelectedSlot(0);
     }
 
     public void ChangeSelectedSlot(int newSelectedSlot){
-        if (selectedSlot >= 0 && selectedSlot < inventorySlots.Length){
+        if (selectedSlot >= 0){
             inventorySlots[selectedSlot].Deselect();
+        }
+        if (newSelectedSlot >= 0 && newSelectedSlot < inventorySlots.Length){
             inventorySlots[newSelectedSlot].Select();
             selectedSlot = newSelectedSlot;
         }
