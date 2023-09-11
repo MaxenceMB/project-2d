@@ -25,13 +25,16 @@ public class InventoryManager : MonoBehaviour {
     }
 
     public void Update(){
+        // Select an inventory slot with the alphanumerical keys (1-5)
         if(Input.inputString != null){
             bool isNumber = int.TryParse(Input.inputString, out int number);
-            if (isNumber && (number >= 0 && number <= 9)){
+            if (isNumber && (number >= 0 && number <= 5)){
                 ChangeSelectedSlot(number - 1);
                 selectedSlot = number - 1;
             }
         }
+
+        // Scroll trough toolbar's slots with the mouse scrollwheel
         if (Input.GetAxis("Mouse ScrollWheel") > 0f){
             ChangeSelectedSlot(Mathf.Max(selectedSlot - 1, 0));
         }
