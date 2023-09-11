@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour {
 
-    public static int MAX_STACK_SIZE = 10;
+    public static int MAX_STACK_SIZE = 2;
 
     public InventorySlot[] inventorySlots;
     public GameObject inventoryItemPrefab;
@@ -22,7 +22,7 @@ public class InventoryManager : MonoBehaviour {
         }
     }
 
-    public void AddItem(Item item){
+    public bool AddItem(Item item){
         for (int i = 0; i < inventorySlots.Length; i++){
             InventoryItem itemInSlot = inventorySlots[i].GetComponentInChildren<InventoryItem>();
             if (itemInSlot != null
@@ -31,12 +31,13 @@ public class InventoryManager : MonoBehaviour {
                 && itemInSlot.item.stackable){
                 itemInSlot.quantity++;
                 itemInSlot.RefreshText();
-                return;
+                return true;
             } else if (itemInSlot == null) {
                 SpawnNewItem(item, inventorySlots[i]);
-                return;
+                return true;
             } 
         }
+        return false;
     }
 
     void SpawnNewItem(Item item, InventorySlot slot){
