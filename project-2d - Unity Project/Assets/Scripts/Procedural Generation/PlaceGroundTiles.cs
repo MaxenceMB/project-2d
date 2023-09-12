@@ -6,7 +6,8 @@ using UnityEngine.Tilemaps;
 public class PlaceGroundTiles : MonoBehaviour {
 
     public Tilemap tileMap;
-    public Tile[] tiles;
+    public RuleTile tileRule;
+    public Tile tile;
     public MapGenerator mapGenerator;
 
     public void Start(){
@@ -24,9 +25,9 @@ public class PlaceGroundTiles : MonoBehaviour {
         for (int x = 0; x < mapGenerator.width; x++){
             for (int y = 0; y < mapGenerator.height; y++){
                 if (mapGenerator.map[x, y] == 0){
-                    tileMap.SetTile(new Vector3Int(x, y, 0), tiles[0]);
+                    tileMap.SetTile(new Vector3Int(x, y, 0), tileRule);
                 } else {
-                    tileMap.SetTile(new Vector3Int(x, y, 0), tiles[1]);
+                    tileMap.SetTile(new Vector3Int(x, y, 0), tile);
                 }
             }
         }
