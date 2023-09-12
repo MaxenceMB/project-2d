@@ -6,7 +6,7 @@ public class MapGenerator : MonoBehaviour {
 
     public int width;
     public int height;
-    int[,] map;
+    public int[,] map;
 
     public string seed;
     public bool useRandomSeed;
@@ -18,38 +18,18 @@ public class MapGenerator : MonoBehaviour {
        GenerateMap(); 
     }
 
+    void Update(){
+        if (Input.GetKeyDown(KeyCode.E)){
+            GenerateMap();
+        }
+    }
+
     public void GenerateMap(){
         map = new int[width, height];
         RandomlyFillMap();
-        for (int i = 0; i < 8; i++){
+        for (int i = 0; i < 4; i++){
             SmoothMap();
-        }/*
-        Debug.Log(NumberOfWallNeighbours(1, 0));
-        Debug.Log(NumberOfWallNeighbours(1, 1));
-        Debug.Log(NumberOfWallNeighbours(1, 2));
-        Debug.Log(NumberOfWallNeighbours(1, 3));
-        Debug.Log(NumberOfWallNeighbours(1, 4));
-        Debug.Log(map[0, 0]);
-        Debug.Log(map[0, 1]);
-        Debug.Log(map[0, 2]);
-        Debug.Log(map[0, 3]);
-        Debug.Log(map[0, 4]);
-        Debug.Log(map[1, 0]);
-        Debug.Log(map[1, 1]);
-        Debug.Log(map[1, 2]);
-        Debug.Log(map[1, 3]);
-        Debug.Log(map[1, 4]);
-        Debug.Log(map[2, 0]);
-        Debug.Log(map[2, 1]);
-        Debug.Log(map[2, 2]);
-        Debug.Log(map[2, 3]);
-        Debug.Log(map[2, 4]);
-        Debug.Log(map[3, 0]);
-        Debug.Log(map[3, 1]);
-        Debug.Log(map[3, 2]);
-        Debug.Log(map[3, 3]);
-        Debug.Log(map[3, 4]);
-        printMap(map);*/
+        }
     }
 
     public void printMap(int[,] mapToPrint){
@@ -97,7 +77,6 @@ public class MapGenerator : MonoBehaviour {
                 }
             }
         }
-        printMap(tempMap);
         map = tempMap;
     }
 
