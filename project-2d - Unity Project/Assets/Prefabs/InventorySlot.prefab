@@ -116,3 +116,4 @@ MonoBehaviour:
   image: {fileID: 1563256060160964497}
   selectedColor: {r: 0.4280421, g: 0.8396226, b: 0.32792804, a: 1}
   deselectedColor: {r: 0.79555404, g: 0.8584906, b: 0.33529723, a: 1}
+  inventoryManager: {fileID: 0}
