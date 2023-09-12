@@ -139,27 +139,14 @@ GameObject:
   - component: {fileID: 279710728}
   - component: {fileID: 279710727}
   - component: {fileID: 279710726}
-  - component: {fileID: 279710725}
+  - component: {fileID: 279710729}
   m_Layer: 0
-  m_Name: PNJ (1)
-  m_TagString: interact_Chest
+  m_Name: Chest
+  m_TagString: Interactible
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &279710725
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 279710724}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9182039f4d158846b5220d2223a541b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  detectionDistance: 1
 --- !u!58 &279710726
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -236,12 +223,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 916545543868332435, guid: 238b85d5d80571e4cbefed25b2b27034, type: 3}
+  m_Sprite: {fileID: -9095717837082945937, guid: a232392e779950e4b95798250a8fcbe4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2, y: 4}
+  m_Size: {x: 1, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -256,12 +243,26 @@ Transform:
   m_GameObject: {fileID: 279710724}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.008883377, z: -0, w: 0.99996054}
-  m_LocalPosition: {x: 26.86, y: -18.43, z: -0.25}
-  m_LocalScale: {x: 1, y: 0.4027, z: 1}
+  m_LocalPosition: {x: 26.7, y: -17.77, z: -0.25}
+  m_LocalScale: {x: 1, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 1.018, z: 0}
+--- !u!114 &279710729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 279710724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 706539adee015f6419144c09783ac505, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectionDistance: 1.25
+  type: 1
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -473,12 +474,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 916545543868332435, guid: 238b85d5d80571e4cbefed25b2b27034, type: 3}
+  m_Sprite: {fileID: -9095717837082945937, guid: a232392e779950e4b95798250a8fcbe4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2, y: 4}
+  m_Size: {x: 1, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -540,6 +541,10 @@ PrefabInstance:
       propertyPath: selected
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9091692125415044118, guid: a0fea1eed374afd4ea3eef47b9d67bd1, type: 3}
+      propertyPath: m_SortingOrder
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -571,27 +576,14 @@ GameObject:
   - component: {fileID: 7069486853655330384}
   - component: {fileID: 187793491362767114}
   - component: {fileID: 9022630484762252282}
-  - component: {fileID: 9022630484762252281}
+  - component: {fileID: 9022630484762252283}
   m_Layer: 0
   m_Name: PNJ
-  m_TagString: interact_PNJ
+  m_TagString: Interactible
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &9022630484762252281
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9022630484762252280}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9182039f4d158846b5220d2223a541b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  detectionDistance: 4
 --- !u!58 &9022630484762252282
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -627,6 +619,20 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.0001
+--- !u!114 &9022630484762252283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9022630484762252280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 706539adee015f6419144c09783ac505, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectionDistance: 4
+  type: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
