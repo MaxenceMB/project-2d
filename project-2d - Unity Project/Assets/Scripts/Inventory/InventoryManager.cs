@@ -7,10 +7,11 @@ public class InventoryManager : MonoBehaviour {
     public InventorySlot[] inventorySlots;
     public GameObject inventoryItemPrefab;
 
+    public Transform player;
+
     public int selectedSlot = -1;
 
     private void Start() {
-        Debug.Log(inventorySlots.Length);
         ChangeSelectedSlot(0);
     }
 
@@ -41,6 +42,14 @@ public class InventoryManager : MonoBehaviour {
         if (Input.GetAxis("Mouse ScrollWheel") < 0f){
             ChangeSelectedSlot(Mathf.Min(selectedSlot + 1, 4));
         }
+
+        // Use item in selected slot
+        //if (selectedSlot >= 0 && selectedSlot < inventorySlots.Length){
+            if (Input.GetKeyUp(KeyCode.F)){
+                GetSelectedItem(true);
+            }
+        //}
+        ShowItemInPlayerHands();
     }
 
     public bool AddItem(Item item){
@@ -65,5 +74,31 @@ public class InventoryManager : MonoBehaviour {
         GameObject newItemGO = Instantiate(inventoryItemPrefab, slot.transform);
         InventoryItem inventoryItem = newItemGO.GetComponent<InventoryItem>();
         inventoryItem.InitialiseItem(item);
+    }
+
+    public Item GetSelectedItem(bool use = false){
+        InventoryItem itemInSlot = inventorySlots[selectedSlot].GetComponentInChildren<InventoryItem>();
+        if (itemInSlot != null){
+            Item item = itemInSlot.item;
+            if (use){
+                itemInSlot.quantity--;
+                if (itemInSlot.quantity <= 0){
+                    Destroy(itemInSlot.gameObject);
+                } else {
+                    itemInSlot.RefreshText();
+                }
+            }
+            return itemInSlot.item;
+        }
+        return null;
+    }
+
+    public void ShowItemInPlayerHands(){
+        Item item = GetSelectedItem();
+        if (item is WeaponItem){
+            player.GetChild(0).gameObject.GetComponent<SpriteRenderer>().sprite = item.icon;
+        } else {
+            player.GetChild(0).gameObject.GetComponent<SpriteRenderer>().sprite = null;
+        }
     }
 }
