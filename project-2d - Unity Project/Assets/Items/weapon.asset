@@ -15,7 +15,16 @@ MonoBehaviour:
   itemName: SCAR-H
   description: Fire !
   category: 1
-  icon: {fileID: 21300000, guid: 7c58a7e23e2407b4b93ba850ccf41524, type: 3}
+  icon: {fileID: 21300000, guid: 12bc280edf37e0a4b9e8508639baa413, type: 3}
   stackable: 0
-  sprites: []
+  sprites:
+  - {fileID: 21300000, guid: bbe3962efbf5c8844b22e47ba55da2a0, type: 3}
+  - {fileID: 21300000, guid: 0cb55cf48b069e94eb53adc1eb719117, type: 3}
+  - {fileID: 21300000, guid: b409dc1c8764c8f49a14d38f4364c636, type: 3}
+  - {fileID: 21300000, guid: 2523c9d609c1c4a49a42c78e0d2c0446, type: 3}
+  - {fileID: 21300000, guid: 12bc280edf37e0a4b9e8508639baa413, type: 3}
+  - {fileID: 21300000, guid: 64d1da6a537e363418450b8489f9ea08, type: 3}
+  - {fileID: 21300000, guid: e295fd0689d7cf0468a91acd025a8616, type: 3}
+  - {fileID: 21300000, guid: 55e51d142c39fc944ad5e40c89591ca8, type: 3}
+  activeSprite: {fileID: 21300000, guid: b409dc1c8764c8f49a14d38f4364c636, type: 3}
   damage: 1

@@ -96,7 +96,8 @@ public class InventoryManager : MonoBehaviour {
     public void ShowItemInPlayerHands(){
         Item item = GetSelectedItem();
         if (item is WeaponItem){
-            player.GetChild(0).gameObject.GetComponent<SpriteRenderer>().sprite = item.icon;
+            WeaponItem weaponItem = (WeaponItem) item;
+            player.GetChild(0).gameObject.GetComponent<SpriteRenderer>().sprite = weaponItem.activeSprite;
         } else {
             player.GetChild(0).gameObject.GetComponent<SpriteRenderer>().sprite = null;
         }

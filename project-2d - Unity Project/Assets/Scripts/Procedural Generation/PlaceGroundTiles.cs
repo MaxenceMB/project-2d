@@ -32,13 +32,4 @@ public class PlaceGroundTiles : MonoBehaviour {
             }
         }
     }
-
-    public int SelectTileToPlace(int x, int y){
-       // switch (mapGenerator.map[x, y]){
-            
-        //}
-        return 0;
-    }
-
-    //public bool 
 }

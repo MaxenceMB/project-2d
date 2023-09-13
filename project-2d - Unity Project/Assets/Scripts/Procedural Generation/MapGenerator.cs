@@ -11,6 +11,9 @@ public class MapGenerator : MonoBehaviour {
     public string seed;
     public bool useRandomSeed;
 
+    [Range(0, 15)]
+    public int iterations = 4;
+
     [Range(0,100)]
     public int wallDensity;
 
@@ -27,7 +30,7 @@ public class MapGenerator : MonoBehaviour {
     public void GenerateMap(){
         map = new int[width, height];
         RandomlyFillMap();
-        for (int i = 0; i < 4; i++){
+        for (int i = 0; i < iterations; i++){
             SmoothMap();
         }
     }
