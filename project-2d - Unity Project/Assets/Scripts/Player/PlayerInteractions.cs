@@ -8,16 +8,20 @@ public class PlayerInteractions : MonoBehaviour {
 
     void Update() {
         // Checks if the player is in the zone of an interactible object
-        if(selected && lastEncountered.type != Interactible.NotInteractible) {
+        if(selected && lastEncountered.type != InteractibleType.NotInteractible) {
             lastEncountered.ShowInputPrompt();
 
             // If the player presses 'E', the correct interaction starts
             if(Input.GetKeyDown(KeyCode.E)) {
-                lastEncountered.ClickInputPrompt();
+                lastEncountered.ClickInputAnimation();
                 lastEncountered.Interact();
+            }
+            if(Input.GetKeyUp(KeyCode.E)) {
+                lastEncountered.ReleaseInputAnimation();
             }
         } else {
             if(lastEncountered != null) {
+                lastEncountered.ReleaseInputAnimation();
                 lastEncountered.HideInputPrompt();
             }
         }
