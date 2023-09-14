@@ -345,7 +345,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   detectionDistance: 1.25
   type: 1
-  interactibleObject: {fileID: 0}
+  interactibleObject: {fileID: 11400000, guid: 10e239bbeedc01049b6cdf0beb2f1cf8, type: 2}
   released_sprite: {fileID: 21300000, guid: 2bcd2e4ef08178f4695fb5ac09122e92, type: 3}
   clicked_sprite: {fileID: 21300000, guid: 61c6b02b249225944b9174e9dc2936af, type: 3}
   promptHeight: 1
@@ -1114,7 +1114,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   detectionDistance: 4
   type: 0
-  interactibleObject: {fileID: 0}
+  interactibleObject: {fileID: 11400000, guid: e7e3b8c816ec77b41a8a15c63a74abda, type: 2}
   released_sprite: {fileID: 21300000, guid: 2bcd2e4ef08178f4695fb5ac09122e92, type: 3}
   clicked_sprite: {fileID: 21300000, guid: 61c6b02b249225944b9174e9dc2936af, type: 3}
   promptHeight: 1.5

@@ -30,16 +30,21 @@ public class InteractibleBehaviour : MonoBehaviour {
     public void Interact() {
         switch(type) {
             case InteractibleType.PNJ:
-                Debug.Log("PNJ");
+                if(interactibleObject is PNJObject) {
+                    PNJObject pnj = (PNJObject)interactibleObject;
+                    pnj.Interact(); 
+                }
                 break;
-
             case InteractibleType.Chest:
-                Debug.Log("CHEST");
+                if(interactibleObject is ChestObject) {
+                    ChestObject chest = (ChestObject)interactibleObject;
+                    chest.Interact(); 
+                }
                 this.type = InteractibleType.NotInteractible;
                 break;
 
             case InteractibleType.Sign:
-                if(interactibleObject.GetType == typeof(SignObject)) {
+                if(interactibleObject is SignObject) {
                     SignObject sign = (SignObject)interactibleObject;
                     sign.Interact(); 
                 }

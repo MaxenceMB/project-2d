@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New_Sign", menuName = "Interactibles/Sign", order = 1)]
+[CreateAssetMenu(fileName = "New_Sign", menuName = "Interactibles/Sign")]
 public class SignObject : ScriptableObject {
     
     [Header("Sign Object")]
@@ -10,10 +10,12 @@ public class SignObject : ScriptableObject {
     [Header("Sign Text")]
     [SerializeField][TextArea(5, 20)] private string signText;
 
-    private InteractibleType type = InteractibleType.Sign;
-
     public void Interact() {
         Debug.Log(signText);
+
+        if(!this.alreadyRead) {
+            this.alreadyRead = true;
+        }
     }
 
 }
