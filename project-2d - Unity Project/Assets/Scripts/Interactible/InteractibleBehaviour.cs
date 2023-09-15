@@ -1,16 +1,20 @@
 using UnityEngine;
-using System.Threading.Tasks;
+using System.Collections;
 
-public enum Interactible { PNJ, Chest, NotInteractible };
+public enum InteractibleType { PNJ, Chest, Sign, NotInteractible };
 
 public class InteractibleBehaviour : MonoBehaviour {
 
-    [SerializeField] private float detectionDistance, promptHeight;
-    [SerializeField] public Interactible type;
+    [Header("Interactible")]
+    [SerializeField] private float detectionDistance;
+    [SerializeField] public InteractibleType type;
+    [SerializeField] ScriptableObject interactibleObject;
 
     [Header("Input Prompt")]
     [SerializeField] private Sprite released_sprite;
     [SerializeField] private Sprite clicked_sprite;
+    [SerializeField] private float promptHeight;
+
     private GameObject inputPrompt;
     private SpriteRenderer inputPromptSprite;
 
@@ -25,13 +29,25 @@ public class InteractibleBehaviour : MonoBehaviour {
 
     public void Interact() {
         switch(type) {
-            case Interactible.PNJ:
-                Debug.Log("PNJ");
+            case InteractibleType.PNJ:
+                if(interactibleObject is PNJObject) {
+                    PNJObject pnj = (PNJObject)interactibleObject;
+                    pnj.Interact(); 
+                }
+                break;
+            case InteractibleType.Chest:
+                if(interactibleObject is ChestObject) {
+                    ChestObject chest = (ChestObject)interactibleObject;
+                    chest.Interact(); 
+                }
+                this.type = InteractibleType.NotInteractible;
                 break;
 
-            case Interactible.Chest:
-                Debug.Log("CHEST");
-                this.type = Interactible.NotInteractible;
+            case InteractibleType.Sign:
+                if(interactibleObject is SignObject) {
+                    SignObject sign = (SignObject)interactibleObject;
+                    sign.Interact(); 
+                }
                 break;
         }
     }
@@ -40,12 +56,16 @@ public class InteractibleBehaviour : MonoBehaviour {
         inputPrompt.SetActive(true);
     }
 
-    public void ClickInputPrompt() {
+    public void HideInputPrompt() {
+        inputPrompt.SetActive(false);
+    }
+
+    public void ClickInputAnimation() {
         inputPromptSprite.sprite = clicked_sprite;
     }
 
-    public void HideInputPrompt() {
-        inputPrompt.SetActive(false);
+    public void ReleaseInputAnimation() {
+        inputPromptSprite.sprite = released_sprite;
     }
 
     private void OnDrawGizmosSelected() {

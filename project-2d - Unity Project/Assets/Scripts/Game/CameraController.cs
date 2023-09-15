@@ -6,7 +6,7 @@ public class CameraController : MonoBehaviour
 
     [SerializeField] private Transform player;
     [SerializeField] private GameObject level;
-    [SerializeField] private float smoothValue;
+    [SerializeField] private float smoothValue, height;
 
     private Vector3 velocity = Vector3.zero;
 
@@ -33,7 +33,7 @@ public class CameraController : MonoBehaviour
     private void FixedUpdate()
     {
         // Smoothing the camera's movement
-        Vector3 finalPos = new Vector3(player.position.x, player.position.y, transform.position.z);
+        Vector3 finalPos = new Vector3(player.position.x, player.position.y + height, transform.position.z);
         transform.position = Vector3.SmoothDamp(transform.position, finalPos, ref velocity, smoothValue);
 
         // Blocking camera with borders
