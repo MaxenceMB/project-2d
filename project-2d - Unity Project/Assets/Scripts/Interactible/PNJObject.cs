@@ -8,6 +8,7 @@ public class PNJObject : ScriptableObject {
     [SerializeField] private bool alreadyTalked;
 
     public void Interact() {
-        Debug.Log("SALUT, MON NOM EST " + this.nickname + ".");
+        string textToShow = "SALUT, MON NOM EST " + this.nickname + ".";
+        ScreenTexts.ShowText(textToShow, 25);
     }
 }

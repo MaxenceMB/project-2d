@@ -5,14 +5,23 @@ public class PlayerInteractions : MonoBehaviour {
     private bool selected = false;                          // True when the player is in a zone which he can interact with
     private InteractibleBehaviour lastEncountered;
 
+    private PlayerMovement pm;
 
-    void Update() {
+
+    private void Start() {
+        pm = this.GetComponent<PlayerMovement>();
+    }
+
+    private void Update() {
+
         // Checks if the player is in the zone of an interactible object
         if(selected && lastEncountered.type != InteractibleType.NotInteractible) {
             lastEncountered.ShowInputPrompt();
 
             // If the player presses 'E', the correct interaction starts
             if(Input.GetKeyDown(KeyCode.E)) {
+                pm.canMove = !pm.canMove;
+
                 lastEncountered.ClickInputAnimation();
                 lastEncountered.Interact();
             }
@@ -28,7 +37,7 @@ public class PlayerInteractions : MonoBehaviour {
     }
 
     // Checks trigger entrances
-    void OnTriggerEnter2D(Collider2D other) {
+    private void OnTriggerEnter2D(Collider2D other) {
         if(other.gameObject.tag == "Interactible") {
             this.selected = true;
             if(other.gameObject.GetComponent<InteractibleBehaviour>() != null) {
@@ -38,7 +47,7 @@ public class PlayerInteractions : MonoBehaviour {
     }
 
     // Checks trigger exits
-    void OnTriggerExit2D(Collider2D other) {
+    private void OnTriggerExit2D(Collider2D other) {
         this.selected = false;
     }
     
