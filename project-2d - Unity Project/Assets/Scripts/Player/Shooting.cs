@@ -3,47 +3,62 @@ using UnityEngine;
 
 public class Shooting : MonoBehaviour {
     
+    // GameObjects
+    public Rigidbody2D rb;
+    public InventoryManager inventoryManager;
+
+    // Directions
     public Camera mainCamera;
     public Vector2 mousePosition;
-    public Rigidbody2D rb;
     public FacingDirection facingDirection;
-    public InventoryManager inventoryManager;
-    public float aimingAngle;
+
+    // Weapon sprite
+    public int layerOrder;
+    public Vector2 weaponPosition;
+
+    // Aiming down sight
+    public float aimChargeDuration = 1.2f;
+    public float chargedAim = 0f;
 
     void Update(){
-        mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 aimingDirection = mousePosition - rb.position;
-        aimingAngle = Mathf.Atan2(aimingDirection.y, aimingDirection.x) * Mathf.Rad2Deg + 22.5f;
         SetFacingDirection();
         SetWeaponSprite();
+        if (Input.GetMouseButton(1)){
+            if (chargedAim < aimChargeDuration){
+                chargedAim += Time.deltaTime;
+            }
+        }
+        if (Input.GetMouseButtonUp(1)){
+            chargedAim = 0;
+        }
+        Debug.Log(chargedAim);
     }
 
     public int SetFacingDirection(){
-        switch (aimingAngle){
-            case float n when (n > 0f && n <= 45f):
+        mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 aimingAngle = mousePosition - rb.position;
+        float aimingDirection = Mathf.Atan2(aimingAngle.y, aimingAngle.x) * Mathf.Rad2Deg + 45f;
+        switch (aimingDirection){
+            case float n when (n > 0f && n <= 90f):
+                weaponPosition = transform.position + new Vector3(0.4f, 1f, 0);
+                layerOrder = 11;
                 facingDirection = FacingDirection.RIGHT;
                 return 0;
-            case float n when (n > 45f && n <= 90f):
-                facingDirection = FacingDirection.RIGHT;
-                return 1;
-            case float n when (n > 90f && n <= 135f):
+            case float n when (n > 90f && n <= 180f):
+                weaponPosition = transform.position + new Vector3(0, 1.5f, 0);
+                layerOrder = 9;
                 facingDirection = FacingDirection.TOP;
+                return 1;
+            case float n when (n > 180f && n <= 270f):
+                weaponPosition = transform.position + new Vector3(-0.4f, 1f, 0);
+                layerOrder = 11;
+                facingDirection = FacingDirection.LEFT;
                 return 2;
-            case float n when (n > 135f && n <= 180f):
-                facingDirection = FacingDirection.LEFT;
-                return 3;
-            case float n when (n > -45f && n <= 0f):
-                facingDirection = FacingDirection.RIGHT;
-                return 4;
-            case float n when (n > -90f && n <= 45f):
-                facingDirection = FacingDirection.BOTTOM;
-                return 5;
-            case float n when (n > -135f && n <= -90f):
-                facingDirection = FacingDirection.LEFT;
-                return 6;
             default:
-                facingDirection = FacingDirection.LEFT;
-                return 7;
+                weaponPosition = transform.position + new Vector3(0, 0.75f, 0);
+                layerOrder = 11;
+                facingDirection = FacingDirection.BOTTOM;
+                return 3;
         }
     }
 
@@ -52,7 +67,10 @@ public class Shooting : MonoBehaviour {
         if (itemInHands is WeaponItem){
             WeaponItem weaponItemInHands = (WeaponItem) itemInHands;
             weaponItemInHands.activeSprite = weaponItemInHands.sprites[SetFacingDirection()];
-            transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().sprite = weaponItemInHands.activeSprite;
+            SpriteRenderer spriteRenderer = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
+            spriteRenderer.sprite = weaponItemInHands.activeSprite;
+            spriteRenderer.sortingOrder = layerOrder;
+            transform.GetChild(0).gameObject.transform.position = weaponPosition;
         }
     }
 }
