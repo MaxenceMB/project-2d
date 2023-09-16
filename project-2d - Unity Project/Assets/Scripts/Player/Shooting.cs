@@ -20,7 +20,7 @@ public class Shooting : MonoBehaviour {
     // Aiming down sight
     public float chargedAim = 0f;
 
-    void Update(){
+    void Update(){/*
         Item selectedItem = inventoryManager.GetSelectedItem();
         if (selectedItem is RangedWeaponItem){
             RangedWeaponItem rangedWeapon = (RangedWeaponItem) selectedItem;
@@ -37,18 +37,30 @@ public class Shooting : MonoBehaviour {
                 Debug.Log(chargedAim);
                 RenderWeaponSprite(rangedWeapon);
             }
+        }*/
+
+        Item selectedItem = inventoryManager.GetSelectedItem();
+        if (selectedItem is RangedWeaponItem){
+            if (Input.GetMouseButton(0)){
+                ChargeRangedWeapon((RangedWeaponItem) selectedItem);
+            } else if (Input.GetMouseButtonUp(0)){
+                FireRangedWeapon((RangedWeaponItem) selectedItem);
+            }
+            RenderWeaponSprite((RangedWeaponItem) selectedItem);
         }
     }
 
-    public void FireRangedWeapon(RangedWeaponItem rangedWeaponItem){
-
-    }
-
-    public void SetChargedWeaponSprite(RangedWeaponItem rangedWeapon)
-    {
+    public void ChargeRangedWeapon(RangedWeaponItem rangedWeapon){
         if (chargedAim < rangedWeapon.aimChargeDuration){
             chargedAim += Time.deltaTime;
         }
+    }
+
+    public void FireRangedWeapon(RangedWeaponItem rangedWeapon){
+        chargedAim = 0f;
+    }
+
+    public void SetRangedWeaponSprite(RangedWeaponItem rangedWeapon){
         switch (chargedAim){
             case float n when n <= (1f / 3f) * rangedWeapon.aimChargeDuration:
                 rangedWeapon.activeSprite = rangedWeapon.chargingSprites[facingDirection].chargingSprites1D[0];
@@ -90,9 +102,17 @@ public class Shooting : MonoBehaviour {
         }
     }
 
-    public void RenderWeaponSprite(WeaponItem selectedItem){
+    public void RenderWeaponSprite(RangedWeaponItem rangedWeapon){
         SpriteRenderer spriteRenderer = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
-        spriteRenderer.sprite = selectedItem.activeSprite;
+        if (chargedAim == 0f){
+            layerOrder = 11;
+            weaponPosition = transform.position + new Vector3(0, 0.75f, 0);
+            rangedWeapon.activeSprite = rangedWeapon.sprites[3];
+        } else {
+            SetFacingDirection();
+            SetRangedWeaponSprite(rangedWeapon);
+        }
+        spriteRenderer.sprite = rangedWeapon.activeSprite;
         spriteRenderer.sortingOrder = layerOrder;
         transform.GetChild(0).gameObject.transform.position = weaponPosition;
     }
