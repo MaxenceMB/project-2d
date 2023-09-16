@@ -4,7 +4,7 @@ using UnityEngine;
     [CreateAssetMenu(menuName = "Items/Ranged weapon")]
 public class RangedWeaponItem : WeaponItem {
     
-    public Sprite projectile;
+    public GameObject projectile;
 
     [Header("Charging")]
     public bool canCharge = true;

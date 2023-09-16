@@ -9,44 +9,34 @@ public class Shooting : MonoBehaviour {
 
     // Directions
     public Camera mainCamera;
-    public Vector2 mousePosition;
-    public int facingDirection;
+    private Vector2 mousePosition;
+    private int facingDirection;
 
     // Weapon sprite
-    public int layerOrder;
-    public Vector2 weaponPosition;
-    public Vector2 projectilePosition;
+    private int layerOrder;
+    private Vector2 weaponPosition;
+
+    // Projectile sprite
+    private Vector2 projectilePosition;
+    public GameObject projectileGO;
+    private float arrowScale;
+    private float arrowRotation;
+    public float arrowOffset = 0.25f;
 
     // Aiming down sight
-    public float chargedAim = 0f;
+    private float chargedAim = 0f;
 
-    void Update(){/*
+    void Update(){
         Item selectedItem = inventoryManager.GetSelectedItem();
         if (selectedItem is RangedWeaponItem){
             RangedWeaponItem rangedWeapon = (RangedWeaponItem) selectedItem;
-            SetFacingDirection();
-            if (rangedWeapon.canCharge){
-                rangedWeapon.activeSprite = rangedWeapon.sprites[facingDirection];
-                if (Input.GetMouseButton(0))
-                {
-                    SetChargedWeaponSprite(rangedWeapon);
-                }
-                if (Input.GetMouseButtonUp(0)){
-                    chargedAim = 0;
-                }
-                Debug.Log(chargedAim);
-                RenderWeaponSprite(rangedWeapon);
-            }
-        }*/
-
-        Item selectedItem = inventoryManager.GetSelectedItem();
-        if (selectedItem is RangedWeaponItem){
             if (Input.GetMouseButton(0)){
-                ChargeRangedWeapon((RangedWeaponItem) selectedItem);
+                ChargeRangedWeapon(rangedWeapon);
             } else if (Input.GetMouseButtonUp(0)){
-                FireRangedWeapon((RangedWeaponItem) selectedItem);
+                FireRangedWeapon(rangedWeapon);
             }
-            RenderWeaponSprite((RangedWeaponItem) selectedItem);
+            RenderWeaponSprite(rangedWeapon);
+            RenderProjectileSprite(rangedWeapon);
         }
     }
 
@@ -86,7 +76,7 @@ public class Shooting : MonoBehaviour {
                 break;
             case float n when (n > 90f && n <= 180f):
                 weaponPosition = transform.position + new Vector3(0, 1.5f, 0);
-                layerOrder = 9;
+                layerOrder = 8;
                 facingDirection = 1;
                 break;
             case float n when (n > 180f && n <= 270f):
@@ -117,7 +107,36 @@ public class Shooting : MonoBehaviour {
         transform.GetChild(0).gameObject.transform.position = weaponPosition;
     }
 
-    public void RenderArrowSprite(){
+    public void RenderProjectileSprite(RangedWeaponItem rangedWeapon){
+        if (rangedWeapon.projectile != null){
+            SpriteRenderer projectileSprite = projectileGO.GetComponent<SpriteRenderer>();
+            projectileSprite.sprite = rangedWeapon.projectile.GetComponent<SpriteRenderer>().sprite;
+            if (chargedAim == 0f){
+                arrowOffset = 0.25f;
+                projectileGO.transform.rotation = Quaternion.Euler(0f, 0f, 270f);
+                projectileGO.transform.position = weaponPosition + new Vector2(0f, -arrowOffset);
+            } else {
+                switch(facingDirection){
+                    case 0:
+                        projectileGO.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+                        projectileGO.transform.position = weaponPosition + new Vector2(arrowOffset, 0f);
+                        break;
+                    case 1:
+                        projectileGO.transform.rotation = Quaternion.Euler(0f, 0f, 90f);
+                        projectileGO.transform.position = weaponPosition + new Vector2(0f, arrowOffset);
+                        break;
+                    case 2:
+                        projectileGO.transform.rotation = Quaternion.Euler(0f, 0f, 180f);
+                        projectileGO.transform.position = weaponPosition + new Vector2(-arrowOffset, 0f);
+                        break;
+                    default:
+                        projectileGO.transform.rotation = Quaternion.Euler(0f, 0f, 270f);
+                        projectileGO.transform.position = weaponPosition + new Vector2(0f, -arrowOffset);
+                        break;
+                }
+            }
+            projectileSprite.sortingOrder = layerOrder + 1;
+        }
     }
 }
 

@@ -23,7 +23,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 6230d0059a3c5944c9230efd84367c1d, type: 3}
   - {fileID: 21300000, guid: 06baf6fa22589164e9deebc22791dc63, type: 3}
   activeSprite: {fileID: 21300000, guid: a0ee00836cff90440b77cae0e40aa848, type: 3}
-  projectile: {fileID: 21300000, guid: bcda07370f046ec4c81ad9a57b67f0b1, type: 3}
+  projectile: {fileID: 3251862935883451909, guid: 36978b7c5916a094a9ac1a12518f27ca, type: 3}
   canCharge: 1
   aimChargeDuration: 1
   chargingSprites:

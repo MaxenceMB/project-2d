@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class InventoryManager : MonoBehaviour {
@@ -100,9 +101,10 @@ public class InventoryManager : MonoBehaviour {
         Item item = GetSelectedItem();
         if (item is WeaponItem){
             WeaponItem weaponItem = (WeaponItem) item;
+            player.GetChild(0).gameObject.SetActive(true);
             player.GetChild(0).gameObject.GetComponent<SpriteRenderer>().sprite = weaponItem.activeSprite;
         } else {
-            player.GetChild(0).gameObject.GetComponent<SpriteRenderer>().sprite = null;
+            player.GetChild(0).gameObject.SetActive(false);
         }
     }
 }
