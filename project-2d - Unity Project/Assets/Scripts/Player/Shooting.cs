@@ -35,12 +35,16 @@ public class Shooting : MonoBehaviour {
                     chargedAim = 0;
                 }
                 Debug.Log(chargedAim);
+                RenderWeaponSprite(rangedWeapon);
             }
-            SetWeaponSprite(rangedWeapon);
         }
     }
 
-    private void SetChargedWeaponSprite(RangedWeaponItem rangedWeapon)
+    public void FireRangedWeapon(RangedWeaponItem rangedWeaponItem){
+
+    }
+
+    public void SetChargedWeaponSprite(RangedWeaponItem rangedWeapon)
     {
         if (chargedAim < rangedWeapon.aimChargeDuration){
             chargedAim += Time.deltaTime;
@@ -86,11 +90,14 @@ public class Shooting : MonoBehaviour {
         }
     }
 
-    public void SetWeaponSprite(WeaponItem selectedItem){
+    public void RenderWeaponSprite(WeaponItem selectedItem){
         SpriteRenderer spriteRenderer = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = selectedItem.activeSprite;
         spriteRenderer.sortingOrder = layerOrder;
         transform.GetChild(0).gameObject.transform.position = weaponPosition;
+    }
+
+    public void RenderArrowSprite(){
     }
 }
 

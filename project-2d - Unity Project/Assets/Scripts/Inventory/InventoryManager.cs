@@ -44,11 +44,9 @@ public class InventoryManager : MonoBehaviour {
         }
 
         // Use item in selected slot
-        //if (selectedSlot >= 0 && selectedSlot < inventorySlots.Length){
-            if (Input.GetKeyUp(KeyCode.F)){
-                GetSelectedItem(true);
-            }
-        //}
+        if (Input.GetKeyUp(KeyCode.F)){
+            UseSelectedItem();
+        }
         ShowItemInPlayerHands();
     }
 
@@ -76,11 +74,18 @@ public class InventoryManager : MonoBehaviour {
         inventoryItem.InitialiseItem(item);
     }
 
-    public Item GetSelectedItem(bool use = false){
+    public Item GetSelectedItem(){
         InventoryItem itemInSlot = inventorySlots[selectedSlot].GetComponentInChildren<InventoryItem>();
         if (itemInSlot != null){
-            Item item = itemInSlot.item;
-            if (use){
+            return itemInSlot.item;
+        }
+        return null;
+    }
+
+    public void UseSelectedItem(){
+        InventoryItem itemInSlot = inventorySlots[selectedSlot].GetComponentInChildren<InventoryItem>();
+        if (itemInSlot != null){
+            if (itemInSlot.item is ConsumableItem){
                 itemInSlot.quantity--;
                 if (itemInSlot.quantity <= 0){
                     Destroy(itemInSlot.gameObject);
@@ -88,9 +93,7 @@ public class InventoryManager : MonoBehaviour {
                     itemInSlot.RefreshText();
                 }
             }
-            return itemInSlot.item;
         }
-        return null;
     }
 
     public void ShowItemInPlayerHands(){
