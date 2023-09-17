@@ -14,3 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nickname: Mouhammad
   alreadyTalked: 0
+  dialogues:
+  - HEY IM MOUHAMMAD
+  - ale degage mtn

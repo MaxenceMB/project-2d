@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PickableItem
   - Interactible
+  - TextUI
   layers:
   - Default
   - TransparentFX

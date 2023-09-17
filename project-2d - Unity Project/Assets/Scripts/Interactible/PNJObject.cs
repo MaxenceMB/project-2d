@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 [CreateAssetMenu(fileName = "New_PNJ", menuName = "Interactibles/PNJ")]
 public class PNJObject : ScriptableObject {
@@ -7,8 +8,21 @@ public class PNJObject : ScriptableObject {
     [SerializeField] private string nickname;
     [SerializeField] private bool alreadyTalked;
 
+    [Header("Dialogues")]
+    [SerializeField] private string[] dialogues;
+    private int countDialogue;
+
     public void Interact() {
-        string textToShow = "SALUT, MON NOM EST " + this.nickname + ".";
-        ScreenTexts.ShowText(textToShow, 25);
+
+        // Displays all chats in order
+        if(countDialogue < dialogues.Length) {
+            ScreenTexts.HideText();
+            ScreenTexts.ShowDialogueText(nickname, dialogues[countDialogue]);
+        } else {  // Ending condition
+            ScreenTexts.HideText();
+            PlayerInteractions.state = InteractStates.None;
+        }
+        countDialogue++;
+        countDialogue = countDialogue % 3;
     }
 }

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: testChest
   m_EditorClassIdentifier: 
   title: testChest
-  alreadyOpened: 0
+  alreadyOpened: 1
   item: []
