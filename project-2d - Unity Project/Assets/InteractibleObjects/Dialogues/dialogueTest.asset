@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 051ed8d568659d241b25c2ac4967ac8a, type: 3}
+  m_Name: dialogueTest
+  m_EditorClassIdentifier: 
+  lines:
+  - character: {fileID: 11400000, guid: e7e3b8c816ec77b41a8a15c63a74abda, type: 2}
+    textLine: OEOEOEEEEEEEEEEEEEE
+  - character: {fileID: 11400000, guid: e7e3b8c816ec77b41a8a15c63a74abda, type: 2}
+    textLine: 'CA VA OU QUOI
+
+      ?????????'
+  - character: {fileID: 11400000, guid: e7e3b8c816ec77b41a8a15c63a74abda, type: 2}
+    textLine: ALORS CA MARCHE OU PAS
+  - character: {fileID: 11400000, guid: e7e3b8c816ec77b41a8a15c63a74abda, type: 2}
+    textLine: 'OUE
+
+
+      JE
+
+
+      SAUTE DES LIGNES'

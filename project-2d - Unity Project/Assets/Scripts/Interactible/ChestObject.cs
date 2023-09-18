@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New_Chest", menuName = "Interactibles/Chest")]
+[CreateAssetMenu(fileName = "New_Chest", menuName = "Interactibles/New Chest")]
 public class ChestObject : ScriptableObject {
     
     [Header("Chest Object")]

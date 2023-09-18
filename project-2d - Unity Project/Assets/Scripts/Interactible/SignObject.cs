@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New_Sign", menuName = "Interactibles/Sign")]
+[CreateAssetMenu(fileName = "New_Sign", menuName = "Interactibles/New Sign")]
 public class SignObject : ScriptableObject {
     
     [Header("Sign Object")]

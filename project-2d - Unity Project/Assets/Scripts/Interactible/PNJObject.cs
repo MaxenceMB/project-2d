@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-[CreateAssetMenu(fileName = "New_PNJ", menuName = "Interactibles/PNJ")]
+[CreateAssetMenu(fileName = "New_PNJ", menuName = "Interactibles/PNJ/New PNJ")]
 public class PNJObject : ScriptableObject {
     
     [Header("PNJ Object")]
@@ -9,20 +9,22 @@ public class PNJObject : ScriptableObject {
     [SerializeField] private bool alreadyTalked;
 
     [Header("Dialogues")]
-    [SerializeField] private string[] dialogues;
-    private int countDialogue;
+    [SerializeField] private Dialogue dialogue;
+    private int countDialogue = 0;
 
     public void Interact() {
 
         // Displays all chats in order
-        if(countDialogue < dialogues.Length) {
+        if(countDialogue < dialogue.getSize()) {
             ScreenTexts.HideText();
-            ScreenTexts.ShowDialogueText(nickname, dialogues[countDialogue]);
+            ScreenTexts.ShowDialogueText(dialogue.getLine(countDialogue).getName(), dialogue.getLine(countDialogue).getText());
         } else {  // Ending condition
             ScreenTexts.HideText();
             PlayerInteractions.state = InteractStates.None;
         }
         countDialogue++;
-        countDialogue = countDialogue % 3;
+        countDialogue = countDialogue % (dialogue.getSize() + 1);
     }
+
+    public string getName() { return nickname; }
 }

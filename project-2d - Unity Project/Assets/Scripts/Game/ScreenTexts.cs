@@ -7,8 +7,8 @@ public enum TextPos { CENTER, TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT, DI
 public class ScreenTexts : MonoBehaviour {
 
     private static GameObject canvas;
-    private static float canvasWidth, canvasHeight; 
     private static ScreenTextsStats sts;
+    public static float canvasWidth, canvasHeight; 
 
     private void Start() {
         canvas = GameObject.Find("Main Canvas");
