@@ -27,7 +27,7 @@ public class InteractibleBehaviour : MonoBehaviour {
 
         this.inputPromptSprite = this.inputPrompt.GetComponent<SpriteRenderer>();
         this.inputPrompt.transform.position = new Vector2(this.transform.position.x, this.transform.position.y);
-        this.inputPrompt.SetActive(true);
+        this.inputPrompt.SetActive(false);
     }
 
     public void Interact() {
@@ -56,14 +56,17 @@ public class InteractibleBehaviour : MonoBehaviour {
 
     public void ShowInputPrompt() {
         promptVisible = true;
+        this.inputPrompt.SetActive(true);
+
         Vector2 dest = new Vector2(this.transform.position.x, this.transform.position.y + promptHeight);
         StartCoroutine(PromptAnimation(dest));
     }
 
     public void HideInputPrompt() {
-        promptVisible = false;
         Vector2 dest = new Vector2(this.transform.position.x, this.transform.position.y);
         StartCoroutine(PromptAnimation(dest));
+
+        promptVisible = false;
     }
 
     public void ClickInputAnimation() {
@@ -91,10 +94,11 @@ public class InteractibleBehaviour : MonoBehaviour {
 
             // Yield here
             yield return null;
-        }  
+        } 
 
         // Make sure we got there
         inputPrompt.transform.position = endPos;
+        inputPrompt.SetActive(promptVisible);
         yield return null;
     }
 
