@@ -26,7 +26,7 @@ MonoBehaviour:
   arrow: {fileID: 3251862935883451909, guid: 36978b7c5916a094a9ac1a12518f27ca, type: 3}
   canCharge: 1
   maxChargedPower: 1.2
-  minimumFiringTreshold: 0.2
+  minimumFiringTreshold: 0.4
   minimumFiringPower: 0.1
   chargingSprites:
   - chargingSprites1D:

@@ -35,7 +35,6 @@ public class Shooting : MonoBehaviour {
             } else {
                 chargedPower = 0;
             }
-            Debug.Log(chargedPower);
             RenderWeaponSprite(rangedWeapon);  
             RenderArrowSprite(rangedWeapon);
         }
