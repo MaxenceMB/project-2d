@@ -40,7 +40,6 @@ public class InteractibleBehaviour : MonoBehaviour {
                     ChestObject chest = (ChestObject)interactibleObject;
                     chest.Interact(); 
                 }
-                this.type = InteractibleType.NotInteractible;
                 break;
 
             case InteractibleType.Sign:

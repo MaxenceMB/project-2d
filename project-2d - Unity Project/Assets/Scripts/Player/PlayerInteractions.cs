@@ -1,9 +1,12 @@
 using UnityEngine;
 
+public enum InteractStates { None, Interacting, End }
+
 public class PlayerInteractions : MonoBehaviour {
 
     private bool selected = false;                          // True when the player is in a zone which he can interact with
     private InteractibleBehaviour lastEncountered;
+    [HideInInspector] public static InteractStates state = InteractStates.None;
 
     private PlayerMovement pm;
 
@@ -18,12 +21,11 @@ public class PlayerInteractions : MonoBehaviour {
         if(selected && lastEncountered.type != InteractibleType.NotInteractible) {
             lastEncountered.ShowInputPrompt();
 
-            // If the player presses 'E', the correct interaction starts
+            // If the player presses 'E' and he wasn't interacting already, the correct interaction starts
             if(Input.GetKeyDown(KeyCode.E)) {
-                pm.canMove = !pm.canMove;
-
-                lastEncountered.ClickInputAnimation();
+                state = InteractStates.Interacting;
                 lastEncountered.Interact();
+                lastEncountered.ClickInputAnimation();
             }
             if(Input.GetKeyUp(KeyCode.E)) {
                 lastEncountered.ReleaseInputAnimation();
@@ -33,6 +35,12 @@ public class PlayerInteractions : MonoBehaviour {
                 lastEncountered.ReleaseInputAnimation();
                 lastEncountered.HideInputPrompt();
             }
+        }
+
+        if(state == InteractStates.Interacting) {
+            pm.canMove = false;
+        } else {
+            pm.canMove = true;
         }
     }
 

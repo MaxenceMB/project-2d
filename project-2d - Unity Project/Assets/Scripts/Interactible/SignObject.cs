@@ -1,20 +1,27 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New_Sign", menuName = "Interactibles/Sign")]
+[CreateAssetMenu(fileName = "New_Sign", menuName = "Interactibles/New Sign")]
 public class SignObject : ScriptableObject {
     
     [Header("Sign Object")]
     [SerializeField] private string title;
-    [SerializeField] private bool alreadyRead;
 
     [Header("Sign Text")]
     [SerializeField][TextArea(5, 20)] private string signText;
 
-    public void Interact() {
-        Debug.Log(signText);
+    private bool reading = false;
 
-        if(!this.alreadyRead) {
-            this.alreadyRead = true;
+    public void Interact() {
+
+        // Displays all chats in order
+        if(!reading) {
+            ScreenTexts.ShowText(signText, 50, TextPos.CENTER);
+            reading = true;
+        } else {  // Ending condition
+            ScreenTexts.HideText();
+            reading = false;
+            
+            PlayerInteractions.state = InteractStates.None;
         }
     }
 
