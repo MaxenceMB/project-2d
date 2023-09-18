@@ -8,7 +8,7 @@ public class PlayerInteractions : MonoBehaviour {
     private InteractibleBehaviour lastEncountered;
     [HideInInspector] public static InteractStates state = InteractStates.None;
 
-    private PlayerMovement pm;
+    private PlayerMovement        pm;
 
 
     private void Start() {
@@ -19,7 +19,10 @@ public class PlayerInteractions : MonoBehaviour {
 
         // Checks if the player is in the zone of an interactible object
         if(selected && lastEncountered.type != InteractibleType.NotInteractible) {
-            lastEncountered.ShowInputPrompt();
+
+            if(!lastEncountered.promptVisible) {
+                lastEncountered.ShowInputPrompt();
+            }
 
             // If the player presses 'E' and he wasn't interacting already, the correct interaction starts
             if(Input.GetKeyDown(KeyCode.E)) {
@@ -27,11 +30,12 @@ public class PlayerInteractions : MonoBehaviour {
                 lastEncountered.Interact();
                 lastEncountered.ClickInputAnimation();
             }
+
             if(Input.GetKeyUp(KeyCode.E)) {
                 lastEncountered.ReleaseInputAnimation();
             }
         } else {
-            if(lastEncountered != null) {
+            if(lastEncountered != null && lastEncountered.promptVisible) {
                 lastEncountered.ReleaseInputAnimation();
                 lastEncountered.HideInputPrompt();
             }
