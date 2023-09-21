@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyDisplayer : MonoBehaviour {
+public class EnemyManager : MonoBehaviour {
 
     public SpriteRenderer spriteRenderer;
     public Enemy enemy;
     public string enemyName;
     public float health;
+
+    public bool hasBeenAlarmed = false;
 
     private void Start() {
         health = enemy.health;
@@ -26,6 +28,12 @@ public class EnemyDisplayer : MonoBehaviour {
         spriteRenderer.color = new Color(255, 0, 0);
         yield return new WaitForSeconds(0.1f);
         spriteRenderer.color = new Color(255, 255, 255);
+    }
+
+    public IEnumerator NoLongerAlerted(){
+        hasBeenAlarmed = true;
+        yield return new WaitForSeconds(5f);
+        hasBeenAlarmed = false;
     }
 
 }

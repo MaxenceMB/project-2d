@@ -17,13 +17,16 @@ public class InteractibleBehaviour : MonoBehaviour {
 
     private GameObject inputPrompt;
     private SpriteRenderer inputPromptSprite;
+    public bool promptVisible = false;
+
+    private Vector2 velocity = Vector2.zero;
 
     private void Start() {
         this.GetComponent<CircleCollider2D>().radius = detectionDistance;
         this.inputPrompt = this.transform.GetChild(0).gameObject;
 
         this.inputPromptSprite = this.inputPrompt.GetComponent<SpriteRenderer>();
-        this.inputPrompt.transform.position = new Vector2(this.transform.position.x, this.transform.position.y + promptHeight);
+        this.inputPrompt.transform.position = new Vector2(this.transform.position.x, this.transform.position.y);
         this.inputPrompt.SetActive(false);
     }
 
@@ -52,11 +55,18 @@ public class InteractibleBehaviour : MonoBehaviour {
     }
 
     public void ShowInputPrompt() {
-        inputPrompt.SetActive(true);
+        promptVisible = true;
+        this.inputPrompt.SetActive(true);
+
+        Vector2 dest = new Vector2(this.transform.position.x, this.transform.position.y + promptHeight);
+        StartCoroutine(PromptAnimation(dest));
     }
 
     public void HideInputPrompt() {
-        inputPrompt.SetActive(false);
+        Vector2 dest = new Vector2(this.transform.position.x, this.transform.position.y);
+        StartCoroutine(PromptAnimation(dest));
+
+        promptVisible = false;
     }
 
     public void ClickInputAnimation() {
@@ -71,4 +81,25 @@ public class InteractibleBehaviour : MonoBehaviour {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, detectionDistance);
     }
+
+    IEnumerator PromptAnimation(Vector2 endPos) {
+        Vector2 currentPos = inputPrompt.transform.position;
+
+        float elapsedTime = 0.0f;
+        float waitTime    = 0.25f;
+
+        while (elapsedTime < waitTime) {
+            inputPrompt.transform.position = Vector2.Lerp(currentPos, endPos, (elapsedTime / waitTime));
+            elapsedTime += Time.deltaTime;
+
+            // Yield here
+            yield return null;
+        } 
+
+        // Make sure we got there
+        inputPrompt.transform.position = endPos;
+        inputPrompt.SetActive(promptVisible);
+        yield return null;
+    }
+
 }

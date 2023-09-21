@@ -417,6 +417,7 @@ MonoBehaviour:
   released_sprite: {fileID: 21300000, guid: 2bcd2e4ef08178f4695fb5ac09122e92, type: 3}
   clicked_sprite: {fileID: 21300000, guid: 61c6b02b249225944b9174e9dc2936af, type: 3}
   promptHeight: 1
+  promptVisible: 0
 --- !u!1 &329729004
 GameObject:
   m_ObjectHideFlags: 0
@@ -454,6 +455,7 @@ MonoBehaviour:
   released_sprite: {fileID: 21300000, guid: 2bcd2e4ef08178f4695fb5ac09122e92, type: 3}
   clicked_sprite: {fileID: 21300000, guid: 61c6b02b249225944b9174e9dc2936af, type: 3}
   promptHeight: 1
+  promptVisible: 0
 --- !u!58 &329729006
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1003,7 +1005,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1773768130
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1393,6 +1395,7 @@ MonoBehaviour:
   released_sprite: {fileID: 21300000, guid: 2bcd2e4ef08178f4695fb5ac09122e92, type: 3}
   clicked_sprite: {fileID: 21300000, guid: 61c6b02b249225944b9174e9dc2936af, type: 3}
   promptHeight: 1.5
+  promptVisible: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
