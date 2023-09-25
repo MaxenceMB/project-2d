@@ -10,20 +10,11 @@ public class DungeonMapGenerator : MonoBehaviour {
 
     public int width;
     public int height;
-    public int[,] map;/*
-
-    public string seed;
-    public bool useRandomSeed;
-
-    [Range(0, 15)]
-    public int iterations = 4;
-
-    [Range(0,100)]
-    public int wallDensity;*/
+    public int[,] map;
 
     public int startingRoomX;
     public int startingRoomY;
-    public int roomCount = 6;
+    public int roomCount = 10;
 
     private void Start() {
         GenerateRoomDisposition();
@@ -60,16 +51,12 @@ public class DungeonMapGenerator : MonoBehaviour {
         int iteration = 0;
         int currentRoom = 0;
         while (placedRooms < roomCount && currentRoom < roomCount && iteration < 150){
-            string debug = "------------------------------------------------------------------------\n";
             int currentRoomX = placedRoomsCoordinates[currentRoom].x;
             int currentRoomY = placedRoomsCoordinates[currentRoom].y;
             int[] freeRoomLocations = PlacableRoomsLocations(currentRoomX, currentRoomY);
-            debug += "Iteration " + iteration + " | New room coordinates : (" + currentRoomX + ", " + currentRoomY + ")\n";
-            debug += "Room locations [" + freeRoomLocations[0] + ", " + freeRoomLocations[1] + ", " + freeRoomLocations[2] + ", " + freeRoomLocations[3] + "]\n";
-            debug += "Placed rooms : " + placedRooms + " | Current room : " + currentRoom + " | Placed rooms size : " + placedRoomsCoordinates.Length + "\n";
-            debug += printMap(map);
-            Debug.Log(debug);
-            int roomSpawnChances = Random.Range(1,101);
+
+            // Generate number of rooms to spawn around the current room
+            int roomSpawnChances = Random.Range(0,100);
             int neighborRoomsCount;
             switch (roomSpawnChances){
                 case int n when n < 40:
@@ -82,7 +69,10 @@ public class DungeonMapGenerator : MonoBehaviour {
                     neighborRoomsCount = 3;
                     break;   
             }
+            // Clamp the room count, if can't place said amount around the current room, 
+            // to max placable rooms around the current room
             neighborRoomsCount = Mathf.Min(neighborRoomsCount, CountPlacableRooms(freeRoomLocations));
+
             // Placing neighborRoomsCount amount of rooms around the current room
             bool canPlaceMore = true;
             int intDirection = Random.Range(0,4);
@@ -90,14 +80,16 @@ public class DungeonMapGenerator : MonoBehaviour {
                 if (placedRooms == roomCount - 1){
                     canPlaceMore = false;
                 } else {
-                    Direction direction = (Direction) (intDirection % 4);
-                    if (CanPlaceRoom(currentRoomX, currentRoomY, direction)){
-                    Debug.Log("Iteration " + iteration + " | Room placed in " + direction.ToString() + " of (" + currentRoomX + ", " + currentRoomY);
-                    Vector2Int placedRoomCoordinates = PlaceRoom(currentRoomX, currentRoomY, direction);
-                    placedRooms++;
-                    placedRoomsCoordinates[placedRooms] = placedRoomCoordinates;
+                    while (freeRoomLocations[intDirection] != 0){
+                        intDirection = (intDirection + 1) % 4;
                     }
-                    intDirection++;
+                    Direction direction = (Direction) intDirection;
+                    if (CanPlaceRoom(currentRoomX, currentRoomY, direction)){
+                        Vector2Int placedRoomCoordinates = PlaceRoom(currentRoomX, currentRoomY, direction);
+                        placedRooms++;
+                        placedRoomsCoordinates[placedRooms] = placedRoomCoordinates;
+                    }
+                    intDirection = (intDirection + 1) % 4;
                 } 
             }
             currentRoom++;
