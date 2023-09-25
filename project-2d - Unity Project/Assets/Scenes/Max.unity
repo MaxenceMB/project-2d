@@ -729,7 +729,7 @@ MonoBehaviour:
   player: {fileID: 5337710776401823147}
   level: {fileID: 1125428541}
   smoothValue: 0.2
-  height: 1.5
+  viewHeight: 1.5
 --- !u!1001 &679705278
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1321,8 +1321,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 6529705934953985172}
-  speed: 4
+  speed: 6
   canMove: 1
+  dashForce: 2.5
+  dashTime: 6
 --- !u!1 &9022630484762252280
 GameObject:
   m_ObjectHideFlags: 0

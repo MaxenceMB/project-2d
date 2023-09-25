@@ -20,7 +20,7 @@ public class PNJObject : ScriptableObject {
             ScreenTexts.ShowDialogueText(dialogue.getLine(countDialogue).getName(), dialogue.getLine(countDialogue).getText());
         } else {  // Ending condition
             ScreenTexts.HideText();
-            PlayerInteractions.state = InteractStates.None;
+            PlayerInteractions.state = InteractStates.End;
         }
         countDialogue++;
         countDialogue = countDialogue % (dialogue.getSize() + 1);

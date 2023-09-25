@@ -4,11 +4,11 @@ public enum InteractStates { None, Interacting, End }
 
 public class PlayerInteractions : MonoBehaviour {
 
-    private bool selected = false;                          // True when the player is in a zone which he can interact with
-    private InteractibleBehaviour lastEncountered;
-    [HideInInspector] public static InteractStates state = InteractStates.None;
+    private bool selected = false;                                                // True when the player is in a zone which he can interact with
+    private InteractibleBehaviour lastEncountered;                                // Saves the current object the player can interact with
+    [HideInInspector] public static InteractStates state = InteractStates.None;   
 
-    private PlayerMovement        pm;
+    private PlayerMovement pm;
 
 
     private void Start() {
@@ -20,6 +20,7 @@ public class PlayerInteractions : MonoBehaviour {
         // Checks if the player is in the zone of an interactible object
         if(selected && lastEncountered.type != InteractibleType.NotInteractible) {
 
+            // If the prompt wasn't visible yet, show it
             if(!lastEncountered.promptVisible) {
                 lastEncountered.ShowInputPrompt();
             }
@@ -34,6 +35,7 @@ public class PlayerInteractions : MonoBehaviour {
             if(Input.GetKeyUp(KeyCode.E)) {
                 lastEncountered.ReleaseInputAnimation();
             }
+            
         } else {
             if(lastEncountered != null && lastEncountered.promptVisible) {
                 lastEncountered.ReleaseInputAnimation();
@@ -43,8 +45,9 @@ public class PlayerInteractions : MonoBehaviour {
 
         if(state == InteractStates.Interacting) {
             pm.canMove = false;
-        } else {
+        } else if (state == InteractStates.End) {
             pm.canMove = true;
+            state = InteractStates.None;
         }
     }
 
