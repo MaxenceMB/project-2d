@@ -11,10 +11,12 @@ public class ScreenTexts : MonoBehaviour {
     public static float canvasWidth, canvasHeight; 
 
     private void Start() {
+        // Get canvas and store its dimensions
         canvas = GameObject.Find("Main Canvas");
         canvasWidth  = canvas.GetComponent<RectTransform>().rect.width;
         canvasHeight = canvas.GetComponent<RectTransform>().rect.height;
 
+        // Takes screen text values from STS script
         sts = canvas.GetComponent<ScreenTextsStats>();
     }
 

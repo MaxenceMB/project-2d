@@ -21,7 +21,7 @@ public class SignObject : ScriptableObject {
             ScreenTexts.HideText();
             reading = false;
             
-            PlayerInteractions.state = InteractStates.None;
+            PlayerInteractions.state = InteractStates.End;
         }
     }
 

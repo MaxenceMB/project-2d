@@ -3,9 +3,13 @@ using UnityEngine.Tilemaps;
 
 public class CameraController : MonoBehaviour {
 
+    [Header("Game objects")]
     [SerializeField] private Transform player;
     [SerializeField] private GameObject level;
-    [SerializeField] private float smoothValue, height;
+
+    [Header("Cam values")]
+    [SerializeField] private float smoothValue;
+    [SerializeField] private float viewHeight;
 
     [HideInInspector] public static float camHeightDimensions, camWidthDimensions;
 
@@ -28,12 +32,14 @@ public class CameraController : MonoBehaviour {
         maxX = levelRenderer.bounds.max.x - camWidthDimensions  / 2f;
         minY = levelRenderer.bounds.min.y + camHeightDimensions / 2f;
         maxY = levelRenderer.bounds.max.y - camHeightDimensions / 2f;
+
     }
+
 
     private void FixedUpdate() {
 
         // Smoothing the camera's movement
-        Vector3 finalPos = new Vector3(player.position.x, player.position.y + height, transform.position.z);
+        Vector3 finalPos = new Vector3(player.position.x, player.position.y + viewHeight, transform.position.z);
         transform.position = Vector3.SmoothDamp(transform.position, finalPos, ref velocity, smoothValue);
 
         // Blocking camera with borders
