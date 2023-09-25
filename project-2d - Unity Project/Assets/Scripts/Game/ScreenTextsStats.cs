@@ -15,4 +15,24 @@ public class ScreenTextsStats : MonoBehaviour {
         dialoguePanel.SetActive(false);
     }
 
+    public float getPauseChar(char c) {
+        switch(c) {
+            case '.':
+                return 0.5f;
+
+            case '!':
+                return 0.5f;
+
+            case '?':
+                return 1.0f;
+
+            case ',':
+                return 0.3f;
+
+            default:
+                return 0.05f;
+
+        }
+    }
+
 }

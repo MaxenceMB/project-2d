@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6659e292d7bb524cbb4db3d06cb292b, type: 3}
   m_Name: testPNJ
   m_EditorClassIdentifier: 
-  nickname: Mouhammad
+  nickname: Momo
   alreadyTalked: 0
   dialogue: {fileID: 11400000, guid: 1fd63411cb613f447a2142d8a1f07ff6, type: 2}
