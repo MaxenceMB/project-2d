@@ -24,7 +24,7 @@ public class DungeonTilesPlacer : MonoBehaviour {
         yield return null;
         for (int x = 0; x < mapGenerator.width; x++){
             for (int y = 0; y < mapGenerator.height; y++){
-                if (mapGenerator.map[x, y] == 0){
+                if (mapGenerator.map[x, y] == 1){
                     tileMap.SetTile(new Vector3Int(x, y, 0), tileRule);
                 } else {
                     tileMap.SetTile(new Vector3Int(x, y, 0), tile);

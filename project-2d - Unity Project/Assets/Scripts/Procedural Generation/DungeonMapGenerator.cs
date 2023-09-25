@@ -10,7 +10,7 @@ public class DungeonMapGenerator : MonoBehaviour {
 
     public int width;
     public int height;
-    public int[,] map;
+    public int[,] map;/*
 
     public string seed;
     public bool useRandomSeed;
@@ -19,19 +19,31 @@ public class DungeonMapGenerator : MonoBehaviour {
     public int iterations = 4;
 
     [Range(0,100)]
-    public int wallDensity;
+    public int wallDensity;*/
 
     public int startingRoomX;
     public int startingRoomY;
     public int roomCount = 6;
 
     private void Start() {
-        
+        map = new int[width, height];
+        printMap(map);
+        GenerateRoomDisposition();
+        printMap(map);
     }
 
     public void PlaceStartingRoom(){
-        startingRoomX = width / 2;
-        startingRoomY = height / 2;
+        if (width % 2 != 0){
+            startingRoomX = width / 2;
+        } else {
+            startingRoomX = (width / 2) - 1;
+        }
+        if (height % 2 != 0){
+            startingRoomY = height / 2;
+        } else {
+            startingRoomY = (height / 2) - 1;
+        }
+        map[startingRoomX, startingRoomY] = 1;
     }
 
     public void GenerateRoomDisposition(){
@@ -39,19 +51,31 @@ public class DungeonMapGenerator : MonoBehaviour {
         Vector2Int[] placedRoomsCoordinates = new Vector2Int[roomCount];
         int placedRooms = 0;
         placedRoomsCoordinates[placedRooms] = new Vector2Int(startingRoomX, startingRoomY);   
-        while (placedRooms != roomCount){
-            int currentRoomX = placedRoomsCoordinates[placedRooms].x;
-            int currentRoomY = placedRoomsCoordinates[placedRooms].y;
+        int n = 0;
+        int currentRoom = 0;
+        while (placedRooms < roomCount && n < 150){
+            int currentRoomX = placedRoomsCoordinates[currentRoom].x;
+            int currentRoomY = placedRoomsCoordinates[currentRoom].y;
+            Debug.Log("Iteration " + n + " | New room coordinates : (" + currentRoomX + ", " + currentRoomY + ")");
             int neighborRoomsCount = Random.Range(1,4);
             // Placing neighborRoomsCount amount of rooms around the current room
             for (int i = 0; i < neighborRoomsCount; i++){
+                if (placedRooms == roomCount - 1){
+                    break;
+                }
                 Direction direction = (Direction) i;
                 if (CanPlaceRoom(currentRoomX, currentRoomY, direction)){
-                    PlaceRoom(currentRoomX, currentRoomY, direction);
+                    Debug.Log("Iteration " + n + " | Room placed in " + direction.ToString() + " of (" + currentRoomX + ", " + currentRoomY);
+                    Vector2Int placedRoomCoordinates = PlaceRoom(currentRoomX, currentRoomY, direction);
+                    //Debug.Log("Iteration " + n + " | New room coordinates : (" + placedRoomCoordinates.x + ", " + placedRoomCoordinates.y + ")");
                     placedRooms++;
+                    placedRoomsCoordinates[placedRooms] = placedRoomCoordinates;
                 }
             }
+            currentRoom++;
+            n++;
         }
+        
     }
 
     public bool CanPlaceRoom(int x, int y, Direction direction){
@@ -88,21 +112,34 @@ public class DungeonMapGenerator : MonoBehaviour {
         return false;
     }
 
-    public void PlaceRoom(int x, int y, Direction direction){
+    public Vector2Int PlaceRoom(int x, int y, Direction direction){
         switch (direction){
             case Direction.TOP:
                 map[x, y + 1] = 1;
-                break;
+                return new Vector2Int(x, y + 1);
             case Direction.RIGHT:
                 map[x + 1, y] = 1;
-                break;
+                return new Vector2Int(x + 1, y);
             case Direction.BOTTOM:
                 map[x, y - 1] = 1;
-                break;
+                return new Vector2Int(x, y - 1);
             case Direction.LEFT:
                 map[x - 1, y] = 1;
-                break;
+                return new Vector2Int(x - 1, y);
         }
+        return new Vector2Int(x, y);
+    }
+
+    public void printMap(int[,] mapToPrint){
+        string str = "\n[";
+        for (int x = 0; x < width; x++){
+            str += "[";
+            for (int y = 0; y < height; y++){
+                str += mapToPrint[x, y] + " ";
+            }
+            str += "]\n";
+        }
+        Debug.Log(str);
     }
 
 
@@ -126,16 +163,7 @@ public class DungeonMapGenerator : MonoBehaviour {
         }
     }
 
-    public void printMap(int[,] mapToPrint){
-        string str = "\n[";
-        for (int x = 0; x < width; x++){
-            str += "[";
-            for (int y = 0; y < height; y++){
-                str += mapToPrint[x, y] + " ";
-            }
-            str += "]\n";
-        }
-    }
+    
 
     public void RandomlyFillMap(){
         // Using a seed to generate a different map every time
