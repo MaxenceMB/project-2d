@@ -26,10 +26,15 @@ public class DungeonMapGenerator : MonoBehaviour {
     public int roomCount = 6;
 
     private void Start() {
-        map = new int[width, height];
-        printMap(map);
         GenerateRoomDisposition();
         printMap(map);
+    }
+
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.E)){
+            GenerateRoomDisposition();
+            printMap(map);
+        }
     }
 
     public void PlaceStartingRoom(){
@@ -47,33 +52,56 @@ public class DungeonMapGenerator : MonoBehaviour {
     }
 
     public void GenerateRoomDisposition(){
+        map = new int[height, width];
         PlaceStartingRoom();
         Vector2Int[] placedRoomsCoordinates = new Vector2Int[roomCount];
         int placedRooms = 0;
         placedRoomsCoordinates[placedRooms] = new Vector2Int(startingRoomX, startingRoomY);   
-        int n = 0;
+        int iteration = 0;
         int currentRoom = 0;
-        while (placedRooms < roomCount && n < 150){
+        while (placedRooms < roomCount && currentRoom < roomCount && iteration < 150){
+            string debug = "------------------------------------------------------------------------\n";
             int currentRoomX = placedRoomsCoordinates[currentRoom].x;
             int currentRoomY = placedRoomsCoordinates[currentRoom].y;
-            Debug.Log("Iteration " + n + " | New room coordinates : (" + currentRoomX + ", " + currentRoomY + ")");
-            int neighborRoomsCount = Random.Range(1,4);
-            // Placing neighborRoomsCount amount of rooms around the current room
-            for (int i = 0; i < neighborRoomsCount; i++){
-                if (placedRooms == roomCount - 1){
+            int[] freeRoomLocations = PlacableRoomsLocations(currentRoomX, currentRoomY);
+            debug += "Iteration " + iteration + " | New room coordinates : (" + currentRoomX + ", " + currentRoomY + ")\n";
+            debug += "Room locations [" + freeRoomLocations[0] + ", " + freeRoomLocations[1] + ", " + freeRoomLocations[2] + ", " + freeRoomLocations[3] + "]\n";
+            debug += "Placed rooms : " + placedRooms + " | Current room : " + currentRoom + " | Placed rooms size : " + placedRoomsCoordinates.Length + "\n";
+            debug += printMap(map);
+            Debug.Log(debug);
+            int roomSpawnChances = Random.Range(1,101);
+            int neighborRoomsCount;
+            switch (roomSpawnChances){
+                case int n when n < 40:
+                    neighborRoomsCount = 1;
                     break;
-                }
-                Direction direction = (Direction) i;
-                if (CanPlaceRoom(currentRoomX, currentRoomY, direction)){
-                    Debug.Log("Iteration " + n + " | Room placed in " + direction.ToString() + " of (" + currentRoomX + ", " + currentRoomY);
+                case int n when n < 80:
+                    neighborRoomsCount = 2;
+                    break;
+                default:
+                    neighborRoomsCount = 3;
+                    break;   
+            }
+            neighborRoomsCount = Mathf.Min(neighborRoomsCount, CountPlacableRooms(freeRoomLocations));
+            // Placing neighborRoomsCount amount of rooms around the current room
+            bool canPlaceMore = true;
+            int intDirection = Random.Range(0,4);
+            for (int i = 0; i < neighborRoomsCount && canPlaceMore; i++){
+                if (placedRooms == roomCount - 1){
+                    canPlaceMore = false;
+                } else {
+                    Direction direction = (Direction) (intDirection % 4);
+                    if (CanPlaceRoom(currentRoomX, currentRoomY, direction)){
+                    Debug.Log("Iteration " + iteration + " | Room placed in " + direction.ToString() + " of (" + currentRoomX + ", " + currentRoomY);
                     Vector2Int placedRoomCoordinates = PlaceRoom(currentRoomX, currentRoomY, direction);
-                    //Debug.Log("Iteration " + n + " | New room coordinates : (" + placedRoomCoordinates.x + ", " + placedRoomCoordinates.y + ")");
                     placedRooms++;
                     placedRoomsCoordinates[placedRooms] = placedRoomCoordinates;
-                }
+                    }
+                    intDirection++;
+                } 
             }
             currentRoom++;
-            n++;
+            iteration++;
         }
         
     }
@@ -81,30 +109,30 @@ public class DungeonMapGenerator : MonoBehaviour {
     public bool CanPlaceRoom(int x, int y, Direction direction){
         switch (direction){
             case Direction.TOP:
-                if (y == height - 1){
+                if (x == 0){
+                    return false;
+                } else if (map[x - 1, y] == 1){
+                    return false;
+                }
+                return true;
+            case Direction.RIGHT:
+                if (y == width - 1){
                     return false;
                 } else if (map[x, y + 1] == 1){
                     return false;
                 }
                 return true;
-            case Direction.RIGHT:
-                if (x == width - 1){
+            case Direction.BOTTOM:
+                if (x == height - 1){
                     return false;
                 } else if (map[x + 1, y] == 1){
                     return false;
                 }
                 return true;
-            case Direction.BOTTOM:
+            case Direction.LEFT:
                 if (y == 0){
                     return false;
-                } else if (map[x, y -1] == 1){
-                    return false;
-                }
-                return true;
-            case Direction.LEFT:
-                if (x == 0){
-                    return false;
-                } else if (map[x - 1, y] == 1){
+                } else if (map[x, y - 1] == 1){
                     return false;
                 }
                 return true;
@@ -115,31 +143,54 @@ public class DungeonMapGenerator : MonoBehaviour {
     public Vector2Int PlaceRoom(int x, int y, Direction direction){
         switch (direction){
             case Direction.TOP:
-                map[x, y + 1] = 1;
-                return new Vector2Int(x, y + 1);
-            case Direction.RIGHT:
-                map[x + 1, y] = 1;
-                return new Vector2Int(x + 1, y);
-            case Direction.BOTTOM:
-                map[x, y - 1] = 1;
-                return new Vector2Int(x, y - 1);
-            case Direction.LEFT:
                 map[x - 1, y] = 1;
                 return new Vector2Int(x - 1, y);
+            case Direction.RIGHT:
+                map[x, y + 1] = 1;
+                return new Vector2Int(x, y + 1);
+            case Direction.BOTTOM:
+                map[x + 1, y] = 1;
+                return new Vector2Int(x + 1, y);
+            case Direction.LEFT:
+                map[x, y - 1] = 1;
+                return new Vector2Int(x, y - 1);
         }
         return new Vector2Int(x, y);
     }
 
-    public void printMap(int[,] mapToPrint){
+    public string printMap(int[,] mapToPrint){
         string str = "\n[";
-        for (int x = 0; x < width; x++){
+        for (int x = 0; x < height; x++){
             str += "[";
-            for (int y = 0; y < height; y++){
+            for (int y = 0; y < width; y++){
                 str += mapToPrint[x, y] + " ";
             }
             str += "]\n";
         }
-        Debug.Log(str);
+        return str;
+    }
+
+    public int[] PlacableRoomsLocations(int x, int y){
+        int[] placableRooms = new int[4];
+        for (int i = 0; i < 4; i++){
+            Direction direction = (Direction) i;
+            if (CanPlaceRoom(x, y, direction)){
+                placableRooms[i] = 0;
+            } else {
+                placableRooms[i] = 1;
+            }
+        }
+        return placableRooms;
+    }
+
+    public int CountPlacableRooms(int[] placableRooms){
+        int count = 0;
+        for (int i = 0; i < 4; i++){
+            if (placableRooms[i] == 0){
+                count++;
+            }
+        }
+        return count;
     }
 
 
