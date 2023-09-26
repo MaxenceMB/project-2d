@@ -506,8 +506,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileMap: {fileID: 2095670001}
-  tileRule: {fileID: 11400000, guid: 5ecfe4570cb26f643b2d835a5764d8f6, type: 2}
-  tile: {fileID: 11400000, guid: 3efefd300cec73142aeb5ed432c7c504, type: 2}
+  tile:
+  - {fileID: 11400000, guid: 7a8ce234f2472424db298f2a890d694f, type: 2}
+  - {fileID: 11400000, guid: ed03bbd2127ef7d429046de078360a8d, type: 2}
+  - {fileID: 11400000, guid: 447f82eab27530245b40da831440c525, type: 2}
   mapGenerator: {fileID: 2115183054}
 --- !u!1 &2095669998
 GameObject:
@@ -535,7 +537,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2095669998}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -677,7 +679,8 @@ MonoBehaviour:
   height: 10
   startingRoomX: 0
   startingRoomY: 0
-  roomCount: 24
+  roomCount: 10
+  dungeonRooms: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

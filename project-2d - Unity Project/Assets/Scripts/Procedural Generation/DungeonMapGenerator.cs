@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class DungeonMapGenerator : MonoBehaviour {
 
-    public enum Direction{
-        TOP = 0, RIGHT = 1, BOTTOM = 2, LEFT = 3
-    }
-
     public int width;
     public int height;
     public int[,] map;
@@ -16,15 +12,17 @@ public class DungeonMapGenerator : MonoBehaviour {
     public int startingRoomY;
     public int roomCount = 10;
 
+    public DungeonRoom[] dungeonRooms;
+
     private void Start() {
         GenerateRoomDisposition();
-        printMap(map);
+        Debug.Log(printMap(map));
     }
 
     private void Update() {
         if (Input.GetKeyDown(KeyCode.E)){
             GenerateRoomDisposition();
-            printMap(map);
+            Debug.Log(printMap(map));
         }
     }
 
@@ -39,18 +37,24 @@ public class DungeonMapGenerator : MonoBehaviour {
         } else {
             startingRoomY = (height / 2) - 1;
         }
-        map[startingRoomX, startingRoomY] = 1;
+        map[startingRoomX, startingRoomY] = (int) RoomType.STARTING_ROOM;
     }
 
     public void GenerateRoomDisposition(){
         map = new int[height, width];
         PlaceStartingRoom();
         Vector2Int[] placedRoomsCoordinates = new Vector2Int[roomCount];
-        int placedRooms = 0;
-        placedRoomsCoordinates[placedRooms] = new Vector2Int(startingRoomX, startingRoomY);   
+        dungeonRooms = new DungeonRoom[roomCount];
+        int placedRoomsCount = 0;
+        placedRoomsCoordinates[placedRoomsCount] = new Vector2Int(startingRoomX, startingRoomY);  
+        
+        // Generate starting room entry door direction
+        int entry = Random.Range(0,4);
+        PlaceRoom(startingRoomX, startingRoomY, (Direction) entry, RoomType.VOID);
+        // Start placing rooms around other rooms starting from the starting room 
         int iteration = 0;
         int currentRoom = 0;
-        while (placedRooms < roomCount && currentRoom < roomCount && iteration < 150){
+        while (placedRoomsCount < roomCount && currentRoom < roomCount && iteration < 150){
             int currentRoomX = placedRoomsCoordinates[currentRoom].x;
             int currentRoomY = placedRoomsCoordinates[currentRoom].y;
             int[] freeRoomLocations = PlacableRoomsLocations(currentRoomX, currentRoomY);
@@ -77,7 +81,7 @@ public class DungeonMapGenerator : MonoBehaviour {
             bool canPlaceMore = true;
             int intDirection = Random.Range(0,4);
             for (int i = 0; i < neighborRoomsCount && canPlaceMore; i++){
-                if (placedRooms == roomCount - 1){
+                if (placedRoomsCount == roomCount - 1){
                     canPlaceMore = false;
                 } else {
                     while (freeRoomLocations[intDirection] != 0){
@@ -85,17 +89,16 @@ public class DungeonMapGenerator : MonoBehaviour {
                     }
                     Direction direction = (Direction) intDirection;
                     if (CanPlaceRoom(currentRoomX, currentRoomY, direction)){
-                        Vector2Int placedRoomCoordinates = PlaceRoom(currentRoomX, currentRoomY, direction);
-                        placedRooms++;
-                        placedRoomsCoordinates[placedRooms] = placedRoomCoordinates;
+                        Vector2Int placedRoomCoordinates = PlaceRoom(currentRoomX, currentRoomY, direction, RoomType.ENEMY_ROOM);
+                        placedRoomsCount++;
+                        placedRoomsCoordinates[placedRoomsCount] = placedRoomCoordinates;
                     }
                     intDirection = (intDirection + 1) % 4;
-                } 
+                }
             }
             currentRoom++;
             iteration++;
-        }
-        
+        }    
     }
 
     public bool CanPlaceRoom(int x, int y, Direction direction){
@@ -103,28 +106,28 @@ public class DungeonMapGenerator : MonoBehaviour {
             case Direction.TOP:
                 if (x == 0){
                     return false;
-                } else if (map[x - 1, y] == 1){
+                } else if (map[x - 1, y] != 0){
                     return false;
                 }
                 return true;
             case Direction.RIGHT:
                 if (y == width - 1){
                     return false;
-                } else if (map[x, y + 1] == 1){
+                } else if (map[x, y + 1] != 0){
                     return false;
                 }
                 return true;
             case Direction.BOTTOM:
                 if (x == height - 1){
                     return false;
-                } else if (map[x + 1, y] == 1){
+                } else if (map[x + 1, y] != 0){
                     return false;
                 }
                 return true;
             case Direction.LEFT:
                 if (y == 0){
                     return false;
-                } else if (map[x, y - 1] == 1){
+                } else if (map[x, y - 1] != 0){
                     return false;
                 }
                 return true;
@@ -132,19 +135,20 @@ public class DungeonMapGenerator : MonoBehaviour {
         return false;
     }
 
-    public Vector2Int PlaceRoom(int x, int y, Direction direction){
+    public Vector2Int PlaceRoom(int x, int y, Direction direction, RoomType roomType){
+        int roomTypeInt = (int) roomType;
         switch (direction){
             case Direction.TOP:
-                map[x - 1, y] = 1;
+                map[x - 1, y] = roomTypeInt;
                 return new Vector2Int(x - 1, y);
             case Direction.RIGHT:
-                map[x, y + 1] = 1;
+                map[x, y + 1] = roomTypeInt;
                 return new Vector2Int(x, y + 1);
             case Direction.BOTTOM:
-                map[x + 1, y] = 1;
+                map[x + 1, y] = roomTypeInt;
                 return new Vector2Int(x + 1, y);
             case Direction.LEFT:
-                map[x, y - 1] = 1;
+                map[x, y - 1] = roomTypeInt;
                 return new Vector2Int(x, y - 1);
         }
         return new Vector2Int(x, y);

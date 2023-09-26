@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class DungeonTilesPlacer : MonoBehaviour {
+public class DungeonRoomsPlacer : MonoBehaviour {
 
     public Tilemap tileMap;
-    public RuleTile tileRule;
-    public Tile tile;
+    public Tile[] tile;
     public DungeonMapGenerator mapGenerator;
 
     public void Start(){
@@ -25,9 +24,13 @@ public class DungeonTilesPlacer : MonoBehaviour {
         for (int x = 0; x < mapGenerator.width; x++){
             for (int y = 0; y < mapGenerator.height; y++){
                 if (mapGenerator.map[x, y] == 1){
-                    tileMap.SetTile(new Vector3Int(x, y, 0), tileRule);
-                } else {
-                    tileMap.SetTile(new Vector3Int(x, y, 0), tile);
+                    tileMap.SetTile(new Vector3Int(x, y, 0), tile[0]);
+                } else if (mapGenerator.map[x, y] == 2) {
+                    tileMap.SetTile(new Vector3Int(x, y, 0), tile[1]);
+                } else if (mapGenerator.map[x, y] == 3) {
+                    tileMap.SetTile(new Vector3Int(x, y, 0), tile[2]);
+                } else if (tileMap.HasTile(new Vector3Int(x, y, 0))){
+                    tileMap.SetTile(new Vector3Int(x, y, 0), null);
                 }
             }
         }
