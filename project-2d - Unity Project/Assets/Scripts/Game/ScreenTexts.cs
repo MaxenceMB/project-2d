@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -8,26 +9,29 @@ public class ScreenTexts : MonoBehaviour {
 
     private static GameObject canvas;
     private static ScreenTextsStats sts;
-    public static float canvasWidth, canvasHeight; 
+    public static float canvasWidth, canvasHeight;
+
+    private static MonoBehaviour instance;
 
     private void Start() {
+        // Get canvas and store its dimensions
         canvas = GameObject.Find("Main Canvas");
         canvasWidth  = canvas.GetComponent<RectTransform>().rect.width;
         canvasHeight = canvas.GetComponent<RectTransform>().rect.height;
 
+        // Takes screen text values from STS script
         sts = canvas.GetComponent<ScreenTextsStats>();
+
+        instance = this;
     }
 
-    public static void ShowText(string textToShow, float fontSize, TextPos pos) {
+    public static void ShowText(string textToShow, float fontSize, TextPos pos, bool charByChar) {
 
         // Create the text game object
         GameObject textObj = new GameObject("textObj_");
         textObj.transform.SetParent(canvas.transform);
         textObj.tag = "TextUI";
-
-        // Add the text
         TMP_Text UIText = textObj.AddComponent<TextMeshProUGUI>();
-        UIText.text = textToShow;
 
         // Modifies the properties
         float posLeft, posTop, boxWidth, boxHeight;
@@ -101,6 +105,13 @@ public class ScreenTexts : MonoBehaviour {
         textObj.GetComponent<RectTransform>().sizeDelta = new Vector2(boxWidth*canvasWidth, boxHeight*canvasHeight);
 
         UIText.fontSize = fontSize;
+        UIText.font     = sts.textFont;
+
+        if(charByChar) {
+            instance.StartCoroutine(CharByChar(UIText, textToShow));
+        } else {
+            UIText.text = textToShow;
+        }
     }
 
     public static void ShowDialogueText(string charName, string textToShow) {
@@ -109,8 +120,8 @@ public class ScreenTexts : MonoBehaviour {
         sts.dialoguePanel.SetActive(true);
 
         // Write both texts, name and text
-        ShowText(charName,   sts.dialogueNameSize, TextPos.DIALOGUE_NAME);
-        ShowText(textToShow, sts.dialogueTextSize, TextPos.DIALOGUE_TEXT);
+        ShowText(charName,   sts.dialogueNameSize, TextPos.DIALOGUE_NAME, false);
+        ShowText(textToShow, sts.dialogueTextSize, TextPos.DIALOGUE_TEXT, true );
 
     }
 
@@ -122,4 +133,30 @@ public class ScreenTexts : MonoBehaviour {
 
         if(sts.dialoguePanel.activeSelf) sts.dialoguePanel.SetActive(false);
     }
+    
+    private static IEnumerator CharByChar(TMP_Text txtObj, string text) {
+        char savedLetter = 'a';
+        string color = "";
+
+		foreach (char letter in text.ToCharArray()) {
+            if(letter == '<' || savedLetter == '<') {
+                savedLetter = '<';
+
+                if(letter == '>'){
+                    savedLetter = '>';
+
+                    color += letter;
+                    txtObj.text += color;
+
+                    color = "";
+                } else {
+                    color += letter;
+                }
+            } else {
+			    txtObj.text += letter;
+			    yield return new WaitForSeconds(sts.getPauseChar(letter));
+            }
+		}
+	}
+
 }

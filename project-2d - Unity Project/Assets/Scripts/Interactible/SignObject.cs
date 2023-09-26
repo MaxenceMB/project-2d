@@ -15,13 +15,13 @@ public class SignObject : ScriptableObject {
 
         // Displays all chats in order
         if(!reading) {
-            ScreenTexts.ShowText(signText, 50, TextPos.CENTER);
+            ScreenTexts.ShowText(signText, 50, TextPos.CENTER, true);
             reading = true;
         } else {  // Ending condition
             ScreenTexts.HideText();
             reading = false;
             
-            PlayerInteractions.state = InteractStates.None;
+            PlayerInteractions.state = InteractStates.End;
         }
     }
 

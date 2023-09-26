@@ -13,9 +13,9 @@ public class ChestObject : ScriptableObject {
     public void Interact() {
         if(alreadyOpened) { // Ending condition
             ScreenTexts.HideText();
-            PlayerInteractions.state = InteractStates.None;
+            PlayerInteractions.state = InteractStates.End;
         } else {
-            ScreenTexts.ShowText("- chest opened -", 50, TextPos.CENTER);
+            ScreenTexts.ShowText("- chest opened -", 50, TextPos.CENTER, true);
             alreadyOpened = true;
         }
     }

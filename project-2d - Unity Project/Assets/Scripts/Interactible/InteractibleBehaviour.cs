@@ -3,6 +3,7 @@ using System.Collections;
 
 public enum InteractibleType { PNJ, Chest, Sign, NotInteractible };
 
+
 public class InteractibleBehaviour : MonoBehaviour {
 
     [Header("Interactible")]
@@ -17,14 +18,16 @@ public class InteractibleBehaviour : MonoBehaviour {
 
     private GameObject inputPrompt;
     private SpriteRenderer inputPromptSprite;
-    public bool promptVisible = false;
+    [HideInInspector] public bool promptVisible = false;
 
     private Vector2 velocity = Vector2.zero;
 
     private void Start() {
+        // Sets detection distance
         this.GetComponent<CircleCollider2D>().radius = detectionDistance;
-        this.inputPrompt = this.transform.GetChild(0).gameObject;
 
+        // Setups the 'E' prompt
+        this.inputPrompt = this.transform.GetChild(0).gameObject;
         this.inputPromptSprite = this.inputPrompt.GetComponent<SpriteRenderer>();
         this.inputPrompt.transform.position = new Vector2(this.transform.position.x, this.transform.position.y);
         this.inputPrompt.SetActive(false);
@@ -54,6 +57,8 @@ public class InteractibleBehaviour : MonoBehaviour {
         }
     }
 
+
+    // Input prompt functions
     public void ShowInputPrompt() {
         promptVisible = true;
         this.inputPrompt.SetActive(true);
@@ -77,12 +82,7 @@ public class InteractibleBehaviour : MonoBehaviour {
         inputPromptSprite.sprite = released_sprite;
     }
 
-    private void OnDrawGizmosSelected() {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, detectionDistance);
-    }
-
-    IEnumerator PromptAnimation(Vector2 endPos) {
+    private IEnumerator PromptAnimation(Vector2 endPos) {
         Vector2 currentPos = inputPrompt.transform.position;
 
         float elapsedTime = 0.0f;
@@ -91,8 +91,6 @@ public class InteractibleBehaviour : MonoBehaviour {
         while (elapsedTime < waitTime) {
             inputPrompt.transform.position = Vector2.Lerp(currentPos, endPos, (elapsedTime / waitTime));
             elapsedTime += Time.deltaTime;
-
-            // Yield here
             yield return null;
         } 
 
@@ -100,6 +98,13 @@ public class InteractibleBehaviour : MonoBehaviour {
         inputPrompt.transform.position = endPos;
         inputPrompt.SetActive(promptVisible);
         yield return null;
+    }
+
+    
+    // Editor functions
+    private void OnDrawGizmosSelected() {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, detectionDistance);
     }
 
 }

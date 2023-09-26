@@ -14,18 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lines:
   - character: {fileID: 11400000, guid: e7e3b8c816ec77b41a8a15c63a74abda, type: 2}
-    textLine: OEOEOEEEEEEEEEEEEEE
+    textLine: 'Salut, moi c''est $n et j''viens d''Albi. Psahtek khoya labess. '
   - character: {fileID: 11400000, guid: e7e3b8c816ec77b41a8a15c63a74abda, type: 2}
-    textLine: 'CA VA OU QUOI
-
-      ?????????'
+    textLine: REGARDE! C'est mon cheval Bertrand (^///^)
   - character: {fileID: 11400000, guid: e7e3b8c816ec77b41a8a15c63a74abda, type: 2}
-    textLine: ALORS CA MARCHE OU PAS
+    textLine: Oui... C'est un steak...
   - character: {fileID: 11400000, guid: e7e3b8c816ec77b41a8a15c63a74abda, type: 2}
-    textLine: 'OUE
-
-
-      JE
-
-
-      SAUTE DES LIGNES'
+    textLine: Bon bah, bisous!
