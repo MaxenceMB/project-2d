@@ -134,9 +134,27 @@ public class ScreenTexts : MonoBehaviour {
     }
     
     private static IEnumerator CharByChar(TMP_Text txtObj, string text) {
+        char savedLetter = 'a';
+        string color = "";
+
 		foreach (char letter in text.ToCharArray()) {
-			txtObj.text += letter;
-			yield return new WaitForSeconds(sts.getPauseChar(letter));
+            if(letter == '<' || savedLetter == '<') {
+                savedLetter = '<';
+
+                if(letter == '>'){
+                    savedLetter = '>';
+
+                    color += letter;
+                    txtObj.text += color;
+
+                    color = "";
+                } else {
+                    color += letter;
+                }
+            } else {
+			    txtObj.text += letter;
+			    yield return new WaitForSeconds(sts.getPauseChar(letter));
+            }
 		}
 	}
 

@@ -8,11 +8,16 @@ public class DialogueLine {
     [SerializeField] private PNJObject character;
     [SerializeField] [TextAreaAttribute] private string textLine;
 
+    private ScreenTextsStats sts;
+
     public PNJObject getPNJ()  { return character;            }
     public string    getName() { return character.getName();  }
 
-    
     public string getText() { 
+        if(sts == null) {
+            LoadSTS();
+        }
+
         char[] array = textLine.ToCharArray();
 
         string start   = "";
@@ -34,7 +39,7 @@ public class DialogueLine {
 
                 switch(c) {
                     case 'n':
-                        replace = character.getName();
+                        replace = "<color=" + ToHex(sts.nameColor) + ">" + character.getName() + "</color>";
                         break;
 
                     default:
@@ -49,8 +54,22 @@ public class DialogueLine {
         } else {
             return textLine;
         }
+    }
 
-        
+    private void LoadSTS() {
+        sts = GameObject.Find("Main Canvas").GetComponent<ScreenTextsStats>();
+    }
+
+    private string FloatNormalizedToHex(float f) {
+        return Mathf.RoundToInt(f * 255f).ToString("X2");
+    }
+
+    private string ToHex(Color c) {
+        string r = FloatNormalizedToHex(c.r);
+        string g = FloatNormalizedToHex(c.g);
+        string b = FloatNormalizedToHex(c.b);
+
+        return "#"+r+g+b;
     }
 
 }

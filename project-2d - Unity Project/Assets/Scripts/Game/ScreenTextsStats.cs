@@ -7,6 +7,9 @@ public class ScreenTextsStats : MonoBehaviour {
     [Space(10)]
     [SerializeField] [Range(1, 100)] public int dialogueTextSize;
     [SerializeField] [Range(1, 100)] public int dialogueNameSize;
+    [Space(10)]
+    [SerializeField] public Color nameColor;
+    [SerializeField] public Color objectColor;
 
     private void Start() {
         dialoguePanel.transform.position = new Vector2(0.5f*ScreenTexts.canvasWidth, 0.35f*ScreenTexts.canvasHeight);

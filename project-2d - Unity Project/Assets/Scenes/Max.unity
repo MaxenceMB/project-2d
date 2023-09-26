@@ -866,7 +866,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -918,6 +918,8 @@ MonoBehaviour:
   dialoguePanel: {fileID: 1773768129}
   dialogueTextSize: 30
   dialogueNameSize: 35
+  nameColor: {r: 1, g: 0, b: 0, a: 0}
+  objectColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1001 &919396891
 PrefabInstance:
   m_ObjectHideFlags: 0
