@@ -15,7 +15,7 @@ public class ChestObject : ScriptableObject {
             ScreenTexts.HideText();
             PlayerInteractions.state = InteractStates.End;
         } else {
-            ScreenTexts.ShowText("- chest opened -", 50, TextPos.CENTER);
+            ScreenTexts.ShowText("- chest opened -", 50, TextPos.CENTER, true);
             alreadyOpened = true;
         }
     }
