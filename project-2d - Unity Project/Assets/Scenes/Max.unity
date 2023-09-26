@@ -916,9 +916,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialoguePanel: {fileID: 1773768129}
+  textFont: {fileID: 11400000, guid: d60f1940eee3e6848aecf6a231eee330, type: 2}
   dialogueTextSize: 30
   dialogueNameSize: 35
-  nameColor: {r: 1, g: 0, b: 0, a: 0}
+  nameColor: {r: 0.2028302, g: 0.64705884, b: 1, a: 0}
   objectColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1001 &919396891
 PrefabInstance:

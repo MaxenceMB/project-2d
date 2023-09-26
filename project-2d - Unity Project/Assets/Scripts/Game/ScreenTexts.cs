@@ -105,6 +105,7 @@ public class ScreenTexts : MonoBehaviour {
         textObj.GetComponent<RectTransform>().sizeDelta = new Vector2(boxWidth*canvasWidth, boxHeight*canvasHeight);
 
         UIText.fontSize = fontSize;
+        UIText.font     = sts.textFont;
 
         if(charByChar) {
             instance.StartCoroutine(CharByChar(UIText, textToShow));
