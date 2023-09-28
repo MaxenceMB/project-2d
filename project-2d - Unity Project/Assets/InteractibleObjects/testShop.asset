@@ -9,11 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: Apple
-  m_EditorClassIdentifier: Assembly-CSharp::Item
-  itemName: Apple
-  description: Eat me !
-  icon: {fileID: 21300000, guid: dff5e056a0ed0584394918641adbdb04, type: 3}
-  stackable: 1
-  price: 5
+  m_Script: {fileID: 11500000, guid: d2f3429e55fcb944f910738d4d9684a2, type: 3}
+  m_Name: testShop
+  m_EditorClassIdentifier: 
+  title: Shop

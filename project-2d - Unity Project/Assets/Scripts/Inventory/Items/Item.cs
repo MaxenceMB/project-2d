@@ -12,4 +12,6 @@ public class Item : ScriptableObject
     [Header("UI")]
     [SerializeField] public Sprite icon;
     [SerializeField] public bool stackable;
+
+    [SerializeField] public int price;
 }
