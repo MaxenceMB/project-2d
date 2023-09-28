@@ -1,32 +1,60 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.ConstrainedExecution;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class DungeonRoom : MonoBehaviour {
+public class DungeonRoom {
 
-    public DungeonRoom topRoom;
-    public DungeonRoom rightRoom;
-    public DungeonRoom bottomRoom;
-    public DungeonRoom leftRoom;
+    public static int RoomXSize = 10;
+    public static int RoomYSize = 6;
+
+    public DungeonRoom topRoom = null;
+    public DungeonRoom rightRoom = null;
+    public DungeonRoom bottomRoom = null;
+    public DungeonRoom leftRoom = null;
+
+    public int roomX;
+    public int roomY;
 
     public Tilemap tilemap;
-
-    public enum RoomType{
-        TOP, RIGHT, BOTTOM, LEFT,
-        TOP_RIGHT, TOP_BOTTOM, TOP_LEFT, RIGHT_BOTTOM, RIGHT_LEFT, BOTTOM_LEFT,
-        TOP_RIGHT_BOTTOM, RIGHT_BOTTOM_LEFT, BOTTOM_LEFT_TOP, LEFT_TOP_RIGHT,
-        FULL
-    }
 
     public RoomType type;
 
     public bool isStartingRoom = false;
     public Direction enteringDirection;
 
-    public DungeonRoom(Direction direction, bool isStartingRoom = false){
+    public DungeonRoom(int x, int y, bool isStartingRoom = false){
+        this.roomX = x;
+        this.roomY = y;
         this.isStartingRoom = isStartingRoom;
-        this.enteringDirection = direction;
+    }
+
+    public void SetEntryDoor(Direction direction){
+        if (isStartingRoom){
+            this.enteringDirection = direction;
+        }
+    }
+
+    public void SetNeighborRoom(DungeonRoom room, Direction direction){
+        switch ((int) direction){
+            case 0:
+                this.topRoom = room;
+                room.bottomRoom = this;
+                break;
+            case 1:
+                this.rightRoom = room;
+                room.leftRoom = this;
+                break;
+            case 2: 
+                this.bottomRoom = room;
+                room.topRoom = this;
+                break;
+            case 3:
+                this.leftRoom = room;
+                room.rightRoom = this;
+                break;
+        }
     }
 }

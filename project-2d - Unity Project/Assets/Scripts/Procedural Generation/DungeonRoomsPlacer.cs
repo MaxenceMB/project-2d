@@ -21,8 +21,8 @@ public class DungeonRoomsPlacer : MonoBehaviour {
 
     IEnumerator PlaceTiles(){
         yield return null;
-        for (int x = 0; x < mapGenerator.width; x++){
-            for (int y = 0; y < mapGenerator.height; y++){
+        for (int x = 0; x < DungeonMapGenerator.DUNGEON_WIDTH; x++){
+            for (int y = 0; y < DungeonMapGenerator.DUNGEON_HEIGHT; y++){
                 if (mapGenerator.map[x, y] == 1){
                     tileMap.SetTile(new Vector3Int(x, y, 0), tile[0]);
                 } else if (mapGenerator.map[x, y] == 2) {
