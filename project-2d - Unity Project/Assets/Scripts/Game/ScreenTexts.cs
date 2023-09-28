@@ -15,7 +15,7 @@ public class ScreenTexts : MonoBehaviour {
 
     private void Start() {
         // Get canvas and store its dimensions
-        canvas = GameObject.Find("Main Canvas");
+        canvas = GameObject.Find("DialogueCanvas");
         canvasWidth  = canvas.GetComponent<RectTransform>().rect.width;
         canvasHeight = canvas.GetComponent<RectTransform>().rect.height;
 

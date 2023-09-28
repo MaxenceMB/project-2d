@@ -57,7 +57,7 @@ public class DialogueLine {
     }
 
     private void LoadSTS() {
-        sts = GameObject.Find("Main Canvas").GetComponent<ScreenTextsStats>();
+        sts = GameObject.Find("DialogueCanvas").GetComponent<ScreenTextsStats>();
     }
 
     private string FloatNormalizedToHex(float f) {

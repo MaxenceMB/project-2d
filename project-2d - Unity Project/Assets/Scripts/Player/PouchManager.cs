@@ -3,39 +3,49 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// manages the player's pouch
+/// </summary>
+
 public class PouchManager : MonoBehaviour
 {
 
+    /// <summary>
+    /// the text field displaying the amount inside the pouch
+    /// </summary>
     [SerializeField] TMP_Text PouchDisplay;
 
+    /// <summary>
+    /// the current amount of money in the player's pouch
+    /// </summary>
     private int balance;
-    private bool CR_running;
+
+    /// <summary>
+    /// indicates whether the co-routine shakePouch is running or not
+    /// </summary> 
+    private bool CRShakePouch_running;
 
     // Start is called before the first frame update
     void Start()
     {
-        balance = 0;
+        balance = 200;
         PouchDisplay.SetText(balance.ToString());
-        CR_running = false;
+        CRShakePouch_running = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E)) {
-            GainMoney(500);
-        }
-        if (Input.GetKeyDown(KeyCode.R)) {
-            if (balance < 200 && !CR_running) {
-                CR_running = true;
-                StartCoroutine(ShakePouch());
-            } else if (balance >= 200) {
-                LoseMoney(200);
-            }
-        }
+        
     }
 
+    /// <summary>
+    /// co-routine making the pouch shake, usually to signify
+    /// the current amount of money isnt enough
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator ShakePouch() {
+        CRShakePouch_running = true;
         float x = PouchDisplay.transform.position.x;
         float y = PouchDisplay.transform.position.y;
         float z = PouchDisplay.transform.position.z;
@@ -45,24 +55,49 @@ public class PouchManager : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         PouchDisplay.transform.position = new Vector3(x,y,z);
         yield return null;
-        CR_running = false;
+        CRShakePouch_running = false;
     }
 
+    /// <summary>
+    /// adds money to the pouch
+    /// </summary>
+    /// <param name="amount"> amount of money added </param>
     public void GainMoney(int amount) {
         balance+=amount;
         PouchDisplay.SetText(balance.ToString());
     } 
 
+    /// <summary>
+    /// removes money from the pouch
+    /// </summary>
+    /// <param name="amount"> amount of money removed </param>
     public void LoseMoney(int amount) {
         balance-=amount;
         PouchDisplay.SetText(balance.ToString());
     }
 
+    /// <summary>
+    /// returns the balance of the pouch
+    /// </summary>
+    /// <returns> balance of the pouch </returns>
     public int GetBalance() {
         return balance;
     }
 
+    /// <summary>
+    /// checks if the player can currently afford to pay a certain amount,
+    /// starts the co-routine ShakePouch() if they can't 
+    /// </summary>
+    /// <param name="amount"> the amount of money the player has to afford </param>
+    /// <returns> true if the player can afford the indicated amount, false if they can't </returns>
     public bool CanAfford(int amount) {
+        if (balance < amount) {
+            Debug.Log("entrée 1");
+            if (!CRShakePouch_running) {
+                Debug.Log("entrée 2");
+                StartCoroutine(ShakePouch());
+            }
+        }
         return balance >= amount;
     }
 

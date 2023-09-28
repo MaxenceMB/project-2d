@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 42711033005493822}
   - component: {fileID: 4080675291916821736}
   - component: {fileID: 4090969044168669827}
+  - component: {fileID: -2792746946450504261}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -216,3 +217,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 1018283490177997427}
   speed: 4
+  canMove: 1
+  dashForce: 0
+  dashTime: 0
+--- !u!114 &-2792746946450504261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 108599181002131172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 276f0d70b19a799419ab2b305d4c6037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvas: {fileID: 0}
+  itemSlotShopPrefab: {fileID: 0}
+  itemsOnSale: []
+  player: {fileID: 0}
+  selectedSlotShopPrefab: {fileID: 0}
