@@ -36,8 +36,8 @@ public class InteractibleBehaviour : MonoBehaviour {
     public void Interact() {
         switch(type) {
             case InteractibleType.PNJ:
-                if(interactibleObject is PNJObject) {
-                    PNJObject pnj = (PNJObject)interactibleObject;
+                if(interactibleObject is NPCObject) {
+                    NPCObject pnj = (NPCObject)interactibleObject;
                     pnj.Interact(); 
                 }
                 break;

@@ -5,19 +5,14 @@ using System;
 public class DialogueLine {
     
     [Header("Dialogue Line Object")]
-    [SerializeField] private PNJObject character;
+    [SerializeField] private NPCObject character;
     [SerializeField] [TextAreaAttribute] private string textLine;
 
-    private ScreenTextsStats sts;
-
-    public PNJObject getPNJ()  { return character;            }
+    public NPCObject getPNJ()  { return character;            }
     public string    getName() { return character.getName();  }
 
-    public string getText() { 
-        if(sts == null) {
-            LoadSTS();
-        }
-
+    public string getText() {         
+        
         char[] array = textLine.ToCharArray();
 
         string start   = "";
@@ -26,26 +21,46 @@ public class DialogueLine {
 
         bool charSpe = false;
 
+        int index = 0;
+
         foreach (char letter in array) {
-            if(letter == '$') {
-                charSpe = true;
+            switch(letter) {
+                case '$':
+                    charSpe = true;
 
-                int index = Array.IndexOf(array, letter);
-                char c = array[index+1];
+                    index = Array.IndexOf(array, letter);
+                    char c = array[index+1];
 
-                start   = textLine.Substring(0, index);
-                end     = textLine.Substring(index+2, textLine.Length - (index+2));
-                replace = "";
+                    start   = textLine.Substring(0, index);
+                    end     = textLine.Substring(index+2, textLine.Length - (index+2));
+                    replace = "";
 
-                switch(c) {
-                    case 'n':
-                        replace = "<color=" + ToHex(sts.nameColor) + ">" + character.getName() + "</color>";
-                        break;
+                    switch(c) {
+                        case 'n':
+                            replace = "<color=" + ToHex(ScreenTexts.GetDialogueNameColor()) + ">" + character.getName() + "</color>";
+                            break;
 
-                    default:
-                        replace = "AAAAAAAAAAAAAAAAAAAAAAAAA";
-                        break;
-                }
+                        default:
+                            replace = "AAAAAAAAAAAAAAAAAAAAAAAAA";
+                            break;
+                    }
+                    break;
+
+
+                case '€':
+                    charSpe = true;
+
+                    index = Array.IndexOf(array, letter);
+
+                    start   = textLine.Substring(0, index);
+                    end     = textLine.Substring(index+1, textLine.Length - (index+1));
+                    replace = "<color=" + ToHex(ScreenTexts.GetDialogueMoneyColor()) + ">€</color>";
+
+                    break;
+
+                default:
+                    break;
+
             }
 		}
 
@@ -56,10 +71,13 @@ public class DialogueLine {
         }
     }
 
+<<<<<<< Updated upstream
     private void LoadSTS() {
         sts = GameObject.Find("DialogueCanvas").GetComponent<ScreenTextsStats>();
     }
 
+=======
+>>>>>>> Stashed changes
     private string FloatNormalizedToHex(float f) {
         return Mathf.RoundToInt(f * 255f).ToString("X2");
     }
@@ -71,5 +89,5 @@ public class DialogueLine {
 
         return "#"+r+g+b;
     }
-
+    
 }

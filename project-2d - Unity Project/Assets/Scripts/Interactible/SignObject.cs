@@ -8,8 +8,8 @@ public class SignObject : ScriptableObject {
 
     [Header("Sign Text")]
     [SerializeField][TextArea(5, 20)] private string signText;
-
     private bool reading = false;
+
 
     public void Interact() {
 
