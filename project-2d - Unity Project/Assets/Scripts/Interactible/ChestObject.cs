@@ -10,7 +10,9 @@ public class ChestObject : ScriptableObject {
     [Header("Chest ")]
     [SerializeField] private Item[] item;
 
+
     public void Interact() {
+        
         if(alreadyOpened) { // Ending condition
             ScreenTexts.HideText();
             PlayerInteractions.state = InteractStates.End;
