@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilemap: {fileID: 2272760017047896495}
-  wall: {fileID: 11400000, guid: f08d336d444b5784a8079a7171364962, type: 2}
+  wall: {fileID: 11400000, guid: 3efefd300cec73142aeb5ed432c7c504, type: 2}
   door: {fileID: 11400000, guid: 7a8ce234f2472424db298f2a890d694f, type: 2}
 --- !u!1 &8586933562177942069
 GameObject:
