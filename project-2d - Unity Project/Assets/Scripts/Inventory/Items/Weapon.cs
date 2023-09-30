@@ -1,7 +1,6 @@
 using UnityEngine;
 
-    [CreateAssetMenu(menuName = "Items/Weapon item")]
-public class WeaponItem : Item {
+public class Weapon : Item {
     
     public int damage = 1;
     [Header("Sprites (RIGHT, TOP, LEFT, BOTTOM)")]

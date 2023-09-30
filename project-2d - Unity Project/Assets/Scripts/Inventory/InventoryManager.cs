@@ -12,18 +12,12 @@ public class InventoryManager : MonoBehaviour {
 
     public int selectedSlot = -1;
 
+
+    /// <summary>
+    /// On start, set the first slot as selected
+    /// </summary>
     private void Start() {
         ChangeSelectedSlot(0);
-    }
-
-    public void ChangeSelectedSlot(int newSelectedSlot){
-        if (selectedSlot >= 0){
-            inventorySlots[selectedSlot].Deselect();
-        }
-        if (newSelectedSlot >= 0 && newSelectedSlot < inventorySlots.Length){
-            inventorySlots[newSelectedSlot].Select();
-            selectedSlot = newSelectedSlot;
-        }
     }
 
     public void Update(){
@@ -48,9 +42,31 @@ public class InventoryManager : MonoBehaviour {
         if (Input.GetKeyUp(KeyCode.F)){
             UseSelectedItem();
         }
+        
         ShowItemInPlayerHands();
     }
 
+
+    /// <summary>
+    /// Changes the selected slot to the given slot
+    /// </summary>
+    /// <param name="newSelectedSlot">  int: the new selected slot index </param>
+    public void ChangeSelectedSlot(int newSelectedSlot){
+        if (selectedSlot >= 0){
+            inventorySlots[selectedSlot].Deselect();
+        }
+        if (newSelectedSlot >= 0 && newSelectedSlot < inventorySlots.Length){
+            inventorySlots[newSelectedSlot].Select();
+            selectedSlot = newSelectedSlot;
+        }
+    }
+
+
+    /// <summary>
+    /// Adds an item to the first free slot or to the first stack that can hold more of the item
+    /// </summary>
+    /// <param name="item"> Item: the item to add </param>
+    /// <returns>           bool: TRUE if the item has been added, FALSE else </returns>
     public bool AddItem(Item item){
         for (int i = 0; i < inventorySlots.Length; i++){
             InventoryItem itemInSlot = inventorySlots[i].GetComponentInChildren<InventoryItem>();
@@ -69,12 +85,23 @@ public class InventoryManager : MonoBehaviour {
         return false;
     }
 
+
+    /// <summary>
+    /// Spawns the given item in the given slot
+    /// </summary>
+    /// <param name="item"> Item: item to spawn </param>
+    /// <param name="slot"> Slot: slot to spawn in </param>
     void SpawnNewItem(Item item, InventorySlot slot){
         GameObject newItemGO = Instantiate(inventoryItemPrefab, slot.transform);
         InventoryItem inventoryItem = newItemGO.GetComponent<InventoryItem>();
         inventoryItem.InitialiseItem(item);
     }
 
+
+    /// <summary>
+    /// Returns the selected slot's item or null if no item is present in that slot
+    /// </summary>
+    /// <returns>   Item: the item in the selected slot </returns>
     public Item GetSelectedItem(){
         InventoryItem itemInSlot = inventorySlots[selectedSlot].GetComponentInChildren<InventoryItem>();
         if (itemInSlot != null){
@@ -83,6 +110,10 @@ public class InventoryManager : MonoBehaviour {
         return null;
     }
 
+
+    /// <summary>
+    /// Uses the item in the select slot if it is a consumable
+    /// </summary>
     public void UseSelectedItem(){
         InventoryItem itemInSlot = inventorySlots[selectedSlot].GetComponentInChildren<InventoryItem>();
         if (itemInSlot != null){
@@ -97,10 +128,14 @@ public class InventoryManager : MonoBehaviour {
         }
     }
 
+
+    /// <summary>
+    /// Displays the item in the selected slot on the player sprite
+    /// </summary>
     public void ShowItemInPlayerHands(){
         Item item = GetSelectedItem();
-        if (item is WeaponItem){
-            WeaponItem weaponItem = (WeaponItem) item;
+        if (item is Weapon){
+            Weapon weaponItem = (Weapon) item;
             player.GetChild(0).gameObject.SetActive(true);
             player.GetChild(0).gameObject.GetComponent<SpriteRenderer>().sprite = weaponItem.activeSprite;
         } else {

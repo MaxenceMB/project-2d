@@ -1,8 +1,8 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-    [CreateAssetMenu(menuName = "Items/Ranged weapon")]
-public class RangedWeaponItem : WeaponItem {
+    [CreateAssetMenu(menuName = "Weapon/Bow")]
+public class Bow : Weapon {
     
     public GameObject arrow;
 
@@ -13,7 +13,6 @@ public class RangedWeaponItem : WeaponItem {
     public float maxChargedPower;
     public float minimumFiringTreshold;
     public float minimumFiringPower = 0f;
-    //public float rechargeTime;
 
     [System.Serializable]
     public struct ChargingSprites{
