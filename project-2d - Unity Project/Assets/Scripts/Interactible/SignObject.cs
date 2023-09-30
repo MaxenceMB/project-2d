@@ -10,7 +10,6 @@ public class SignObject : ScriptableObject {
     [SerializeField][TextArea(5, 20)] private string signText;
     private bool reading = false;
 
-
     public void Interact() {
 
         // Displays all chats in order

@@ -71,13 +71,6 @@ public class DialogueLine {
         }
     }
 
-<<<<<<< Updated upstream
-    private void LoadSTS() {
-        sts = GameObject.Find("DialogueCanvas").GetComponent<ScreenTextsStats>();
-    }
-
-=======
->>>>>>> Stashed changes
     private string FloatNormalizedToHex(float f) {
         return Mathf.RoundToInt(f * 255f).ToString("X2");
     }
