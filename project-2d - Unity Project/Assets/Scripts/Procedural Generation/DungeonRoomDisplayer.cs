@@ -37,18 +37,18 @@ public class DungeonRoomDisplayer : MonoBehaviour {
             tilemap.SetTile(new Vector3Int(0, topLeft.y, 0), door);
             tilemap.SetTile(new Vector3Int(-1, topLeft.y, 0), door);
         }
-        /*if (room.bottomRoom != null){
-            tilemap.SetTile(new Vector3Int(DungeonMapGenerator.DUNGEON_WIDTH / 2, bottomLeft.y, 0), door);
-            tilemap.SetTile(new Vector3Int((DungeonMapGenerator.DUNGEON_WIDTH / 2) + 1, bottomLeft.y, 0), door);
+        if (room.bottomRoom != null){
+            tilemap.SetTile(new Vector3Int(0, bottomLeft.y, 0), door);
+            tilemap.SetTile(new Vector3Int(-1, bottomLeft.y, 0), door);
         }
         if (room.rightRoom != null){
-            tilemap.SetTile(new Vector3Int(bottomRight.x, DungeonMapGenerator.DUNGEON_HEIGHT / 2, 0), door);
-            tilemap.SetTile(new Vector3Int(bottomRight.x, (DungeonMapGenerator.DUNGEON_HEIGHT / 2) + 1, 0), door);
+            tilemap.SetTile(new Vector3Int(bottomRight.x, 0, 0), door);
+            tilemap.SetTile(new Vector3Int(bottomRight.x, -1, 0), door);
         }
         if (room.leftRoom != null){
-            tilemap.SetTile(new Vector3Int(bottomLeft.x, DungeonMapGenerator.DUNGEON_HEIGHT / 2, 0), door);
-            tilemap.SetTile(new Vector3Int(bottomLeft.x, (DungeonMapGenerator.DUNGEON_HEIGHT / 2) + 1, 0), door);
-        }*/
+            tilemap.SetTile(new Vector3Int(bottomLeft.x, 0, 0), door);
+            tilemap.SetTile(new Vector3Int(bottomLeft.x, -1, 0), door);
+        }
     }
 }
 

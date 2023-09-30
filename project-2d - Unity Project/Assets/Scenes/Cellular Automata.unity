@@ -244,9 +244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9faa62ff991c31e4db974a6005593d00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  length: 5
-  height: 5
-  room: {fileID: 7607751244531951105, guid: 7d1753a47f47b364f9bffea60b585297, type: 3}
+  dungeonRoomGO: {fileID: 7607751244531951105, guid: 7d1753a47f47b364f9bffea60b585297, type: 3}
 --- !u!4 &596271939
 Transform:
   m_ObjectHideFlags: 0
@@ -558,74 +556,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ed03bbd2127ef7d429046de078360a8d, type: 2}
   - {fileID: 11400000, guid: 447f82eab27530245b40da831440c525, type: 2}
   mapGenerator: {fileID: 2115183054}
---- !u!1001 &2015368530
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 6288231705161550597, guid: 7d1753a47f47b364f9bffea60b585297, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -11.479455
-      objectReference: {fileID: 0}
-    - target: {fileID: 6288231705161550597, guid: 7d1753a47f47b364f9bffea60b585297, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -2.6033697
-      objectReference: {fileID: 0}
-    - target: {fileID: 6288231705161550597, guid: 7d1753a47f47b364f9bffea60b585297, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6288231705161550597, guid: 7d1753a47f47b364f9bffea60b585297, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6288231705161550597, guid: 7d1753a47f47b364f9bffea60b585297, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6288231705161550597, guid: 7d1753a47f47b364f9bffea60b585297, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6288231705161550597, guid: 7d1753a47f47b364f9bffea60b585297, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6288231705161550597, guid: 7d1753a47f47b364f9bffea60b585297, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6288231705161550597, guid: 7d1753a47f47b364f9bffea60b585297, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6288231705161550597, guid: 7d1753a47f47b364f9bffea60b585297, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7607751244531951105, guid: 7d1753a47f47b364f9bffea60b585297, type: 3}
-      propertyPath: m_Name
-      value: EnemyRoom_1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 7d1753a47f47b364f9bffea60b585297, type: 3}
---- !u!114 &2028064602 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 316288142726825225, guid: 7d1753a47f47b364f9bffea60b585297, type: 3}
-  m_PrefabInstance: {fileID: 2015368530}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d37df2de08b54ff4faa8e0175e509f54, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2095669998
 GameObject:
   m_ObjectHideFlags: 0
@@ -772,7 +702,7 @@ Transform:
   m_GameObject: {fileID: 2115183052}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.383368, y: -7.1674514, z: -0.094003625}
+  m_LocalPosition: {x: 7.383368, y: 10.8, z: -0.094003625}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -790,12 +720,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0328356563ff224f91ad4bd29c5a670, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 10
-  height: 10
-  startingRoomX: 0
-  startingRoomY: 0
-  roomCount: 10
-  dungeonRoomDisplayer: {fileID: 2028064602}
+  roomCount: 25
+  dungeonGrid: {fileID: 596271938}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -806,4 +732,3 @@ SceneRoots:
   - {fileID: 2115183053}
   - {fileID: 1713421818}
   - {fileID: 596271939}
-  - {fileID: 2015368530}
