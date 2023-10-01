@@ -45,7 +45,9 @@ public class PouchManager : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     public IEnumerator ShakePouch() {
+        //declares that the co-routine is running
         CRShakePouch_running = true;
+        //makes the pouch shake
         float x = PouchDisplay.transform.position.x;
         float y = PouchDisplay.transform.position.y;
         float z = PouchDisplay.transform.position.z;
@@ -55,6 +57,7 @@ public class PouchManager : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         PouchDisplay.transform.position = new Vector3(x,y,z);
         yield return null;
+        //declares that the co-routine isn't running anymore
         CRShakePouch_running = false;
     }
 
@@ -92,9 +95,7 @@ public class PouchManager : MonoBehaviour
     /// <returns> true if the player can afford the indicated amount, false if they can't </returns>
     public bool CanAfford(int amount) {
         if (balance < amount) {
-            Debug.Log("entrée 1");
             if (!CRShakePouch_running) {
-                Debug.Log("entrée 2");
                 StartCoroutine(ShakePouch());
             }
         }
