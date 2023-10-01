@@ -25,6 +25,8 @@ public class DungeonRoom {
     public bool isStartingRoom = false;
     public Direction enteringDirection;
 
+    public int distanceFromStartingRoom = 0;
+
     public DungeonRoom(int x, int y, bool isStartingRoom = false){
         this.roomX = x;
         this.roomY = y;

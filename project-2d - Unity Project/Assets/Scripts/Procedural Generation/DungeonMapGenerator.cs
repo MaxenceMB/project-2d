@@ -20,7 +20,7 @@ public class DungeonMapGenerator : MonoBehaviour {
     private void Start() {
         GenerateRoomDisposition();
         Debug.Log(printMap(map));
-        dungeonGrid.StartPlacing(dungeonRooms, map);
+        dungeonGrid.PlaceAllRooms(dungeonRooms, map);
     }
 
     private void Update() {
@@ -99,7 +99,10 @@ public class DungeonMapGenerator : MonoBehaviour {
                         Vector2Int placedRoomCoordinates = PlaceRoom(currentRoomX, currentRoomY, direction, RoomType.ENEMY_ROOM);
                         placedRoomsCount++;
                         placedRoomsCoordinates[placedRoomsCount] = placedRoomCoordinates;
-                        dungeonRooms[placedRoomsCount] = new DungeonRoom(placedRoomCoordinates.x, placedRoomCoordinates.y, false);
+                        dungeonRooms[placedRoomsCount] = new DungeonRoom(placedRoomCoordinates.x, placedRoomCoordinates.y, false)
+                        {
+                            distanceFromStartingRoom = dungeonRooms[currentRoom].distanceFromStartingRoom + 1
+                        };
                         dungeonRooms[currentRoom].SetNeighborRoom(dungeonRooms[placedRoomsCount], direction);
                     }
                     intDirection = (intDirection + 1) % 4;

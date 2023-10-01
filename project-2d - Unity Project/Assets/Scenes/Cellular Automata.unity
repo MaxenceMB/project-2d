@@ -244,7 +244,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9faa62ff991c31e4db974a6005593d00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dungeonRoomGO: {fileID: 7607751244531951105, guid: 7d1753a47f47b364f9bffea60b585297, type: 3}
+  dungeonRoomGO:
+  - {fileID: 7607751244531951105, guid: 7d1753a47f47b364f9bffea60b585297, type: 3}
+  - {fileID: 8364221165802643593, guid: acfc170947a27bd4c9d07a75437c75b2, type: 3}
 --- !u!4 &596271939
 Transform:
   m_ObjectHideFlags: 0
@@ -720,7 +722,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0328356563ff224f91ad4bd29c5a670, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomCount: 25
+  roomCount: 12
   dungeonGrid: {fileID: 596271938}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
