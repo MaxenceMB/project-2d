@@ -16,6 +16,7 @@ public class NPCObject : ScriptableObject {
 
     public void Interact() {
         ScreenTexts.HideText();
+        ScreenTexts.SetDialoguePrompt(false);
 
         // Displays all chats in order
         if(countDialogue < dialogue.getSize()) {
@@ -33,12 +34,8 @@ public class NPCObject : ScriptableObject {
     }
 
     public void EndLine() {
-        ShowLinePrompt();
+        ScreenTexts.SetDialoguePrompt(true);
         countDialogue++;
-    }
-
-    private void ShowLinePrompt() {
-        //
     }
 
     public string getName() { return nickname; }

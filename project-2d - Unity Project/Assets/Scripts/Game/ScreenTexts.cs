@@ -1,14 +1,19 @@
 using UnityEngine;
 using System.Collections;
 using TMPro;
+using System;
 
 
-// Enumeration of text positions on screen
+/// <summary>
+/// Enumeration used to positionate the text correctly when using ShowText()
+/// </summary>
 public enum TextPos { CENTER, TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT, DIALOGUE_TEXT, DIALOGUE_NAME };
 
 
-// SCREENTEXTSSTATS - Class to put on the Main Canvas of each scenes.
-// Calculates, stores and returns all values that are used in SCREENTEXTS static class.
+/// <summary>
+/// Class to put on the Main Canvas of each scenes.
+/// Calculates, stores and returns all values that are used to show text on screen.
+/// </summary>
 public class ScreenTexts : MonoBehaviour {
 
     // ---  Serializable versions --- //
@@ -25,7 +30,7 @@ public class ScreenTexts : MonoBehaviour {
 
 
     // --- Static versions --- //
-    private static GameObject    dialoguePanel, canvas;
+    private static GameObject    dialoguePanel, dialoguePanelPrompt, canvas;
     private static TMP_FontAsset dialogueFont;
     private static float         canvasWidth, canvasHeight;
     private static int           textSize, nameSize;
@@ -35,7 +40,10 @@ public class ScreenTexts : MonoBehaviour {
 
 
     /// <summary>
-    /// Start method
+    /// Start method:
+    /// - Assigns the variables to their static versions
+    /// - Calculates canvas's sizes
+    /// - Calculates DialoguePane sizes and places it correctly
     /// </summary>
     private void Start() {
 
@@ -57,10 +65,12 @@ public class ScreenTexts : MonoBehaviour {
         dialoguePanel.transform.position = new Vector2(0.5f*canvasWidth, 0.35f*canvasHeight);
         dialoguePanel.GetComponent<RectTransform>().sizeDelta = new Vector2(0.62f*canvasWidth, 0.4f*canvasHeight);
         dialoguePanel.SetActive(false);
+        
+        // Places the dialogue panel prompt correctly
+        dialoguePanelPrompt = dialoguePanel.transform.GetChild(0).gameObject;
+        dialoguePanelPrompt.transform.position = new Vector2(0.78f*canvasWidth, 0.20f*canvasHeight);
+        dialoguePanelPrompt.SetActive(false);
 
-        // Recalculates font sizes compared to canvas
-        textSize = (int)((canvasHeight+canvasWidth)*textSize)/1775;
-        nameSize = (int)((canvasHeight+canvasWidth)*nameSize)/1775;
     }
 
 
@@ -88,7 +98,7 @@ public class ScreenTexts : MonoBehaviour {
         textObj.GetComponent<RectTransform>().sizeDelta = new Vector2(values[2], values[3]);
 
         // Assigning text and fontsize
-        UIText.fontSize  = fontSize;
+        UIText.fontSize  = CorrectFontSize(fontSize);
         UIText.font      = GetDialogueFont();
         UIText.alignment = (TextAlignmentOptions)values[4];
 
@@ -116,16 +126,15 @@ public class ScreenTexts : MonoBehaviour {
         SetDialoguePanel(true);
 
         // Write both texts, name and text
-        ShowText(charName,   GetDialogueNameSize(), TextPos.DIALOGUE_NAME, false);
-        ShowText(textToShow, GetDialogueTextSize(), TextPos.DIALOGUE_TEXT, charByChar);
+        ShowText(charName,   nameSize, TextPos.DIALOGUE_NAME, false);
+        ShowText(textToShow, textSize, TextPos.DIALOGUE_TEXT, charByChar);
     }
 
 
-    // HIDETEXT() :
-    // ---                                                  ---
-    // Hides all the texts that are currently shown on screen
-    // (And hides dialogue text box if shown)
-    // ---                                                  ---
+    /// <summary>
+    /// Hides all the texts that are currently shown on screen
+    /// and hides dialogue text box if shown
+    /// </summary>
     public static void HideText() {
 
         // Finds all the texts in scene
@@ -141,96 +150,66 @@ public class ScreenTexts : MonoBehaviour {
     }
 
 
-    // STATIC CHECKNPCENDLINE(NPCOBJECT) :
-    // ---                                                               ---
-    // Just starts the coroutine to check when the DialogueLine ends
-    // Takes a NPCObject as argument, to just tell him back the line ended
-    // ---                                                               ---   
+    /// <summary>
+    /// Just starts the coroutine to check when the DialogueLine ends
+    /// </summary>
+    /// 
+    /// <param name="npc"> NPCObject: Here just tell him back the line ended </param>
     public static void CheckNPCEndLine(NPCObject npc) {
         instance.StartCoroutine(CheckEndLine(npc));
     }
 
 
-    // STATIC STOPCHARBYCHAR() :
-    // ---                            ---
-    // Stops the CHARBYCHAR() coroutine
-    // ---                            ---
+    /// <summary>
+    /// Stops the CHARBYCHAR() coroutine
+    /// </summary>
+    /// 
+    /// <param name="npc"> NPCObject: Here just tell him back the line ended </param>
     public static void StopCharByChar(NPCObject npc) {
         instance.StopAllCoroutines();
-        Debug.Log("STOPPED COROUTINES");
         npc.EndLine();
         writing = false;
     }
 
-    // COROUTINE CHECKENDLINE(NPCOBJECT) :
-    // ---                                                                      ---
-    // Coroutine to check when the DialogueLine ends
-    // Takes a NPCObject as argument and starts NPCOBJECT.ENDLINE() when finished
-    // ---                                                                      ---   
-    private static IEnumerator CheckEndLine(NPCObject npc) {    
-        yield return new WaitForSeconds(0.2f);
-        while(writing) {
-            yield return null;
+
+    /// <summary>
+    /// Gives the time dialogue has to wait before showing next char, depending on the char itself
+    /// </summary>
+    /// 
+    /// <param name="c"> char: The character the pause will be taken afdter</param>
+    /// <returns> float: Time as seconds, in a float value</returns>
+    private static float GetPauseChar(char c) {
+        switch(c) {
+            case '.':
+                return 0.30f;
+
+            case '!':
+                return 0.30f;
+
+            case '?':
+                return 0.50f;
+
+            case ',':
+                return 0.10f;
+
+            default:
+                return 0.05f;
+
         }
-        Debug.Log("Text Ended");
-        npc.EndLine();
-        yield return null;
     }
 
 
-    // COROUTINE CHARBYCHAR(TMP_TEXT, STRING) :
-    // ---                                                   ---
-    // Shows the text character by character, including colors
-    // Takes 2 arguments:
-    //                  - TMP_TEXT to modify the text on UI
-    //                  - STRING   the text that will be shown
-    // ---                                                   ---
-    private static IEnumerator CharByChar(TMP_Text txtObj, string text) {
-
-        // Initialise some variables
-        char savedLetter = 'a';
-        string color = "";
-
-        // For each character in the text
-		foreach (char letter in text.ToCharArray()) {
-
-            // If the there is a color atribute -> skip it
-            if(letter == '<' || savedLetter == '<') {
-                savedLetter = '<';
-
-                if(letter == '>'){
-                    savedLetter = '>';
-
-                    color += letter;
-                    txtObj.text += color;
-
-                    color = "";
-                } else {
-                    color += letter;
-                }
-
-            } else {
-                // Add the letter to the UI text field
-			    txtObj.text += letter;
-			    yield return new WaitForSeconds(GetPauseChar(letter));
-            }
-		}
-
-        // Turns the variable isWriting to false to know it ended
-        writing = false;
-	}
-
-
-    // FLOAT[] GETPOSVALUES(TEXTPOS) :
-    // ---                                                                         ---
-    // Gets and returns position values on screen for each TextPos
-    // Takes a TextPos argument
-    // Returns a float array with : [0] = Left pos
-    //                              [1] = Top pos
-    //                              [2] = Width of the text box
-    //                              [3] = Height of the text box
-    //                          and [4] = float value of AlignmentOption enumeration
-    // ---                                                                         ---
+    /// <summary>
+    /// Gets and returns position values on screen for each TextPos
+    /// </summary>
+    /// 
+    /// <param name="pos"> TextPos: The position we need the values of </param>
+    /// <returns> Returns a float array with : [0] = Left pos
+    ///                                        [1] = Top pos
+    ///                                        [2] = Width of the text box
+    ///                                        [3] = Height of the text box
+    ///                                    and [4] = float value of AlignmentOption enumeration
+    /// </returns>
     private static float[] GetPosValues(TextPos pos) {
         float[] values = new float[5];
 
@@ -302,117 +281,171 @@ public class ScreenTexts : MonoBehaviour {
         return values;
     }
 
-
-    // FLOAT GETPAUSECHAR(CHAR) :
-    // ---                                                                                      ---
-    // Gives the time dialogue has to wait before showing next char, depending on the char itself
-    // Takes a char (current one)   
-    // Returns time as seconds, in a float value
-    // ---                                                                                      ---
-    private static float GetPauseChar(char c) {
-        switch(c) {
-            case '.':
-                return 0.30f;
-
-            case '!':
-                return 0.30f;
-
-            case '?':
-                return 0.50f;
-
-            case ',':
-                return 0.10f;
-
-            default:
-                return 0.05f;
-
-        }
+    
+    /// <summary>
+    /// Calculates the adapted font size compared to the canvas's size
+    /// </summary>
+    /// 
+    /// <param name="fontSize"> float: Original font size value </param>
+    /// <returns> int: The new adapted font size </returns>
+    private static int CorrectFontSize(float fontSize) {
+        return (int)((canvasHeight+canvasWidth)*fontSize)/1775;
     }
 
 
-    // GAMEOBJECT GETDIALOGUEPANEL() :
-    // ---                                    ---
-    // Returns the dialogue panel as GameObject
-    // ---                                    ---
+
+    ////////// COROUTINES \\\\\\\\\\
+
+
+    /// <summary>
+    /// Coroutine to check when the DialogueLine ends
+    /// </summary>
+    /// 
+    /// <param name="npc"> NPCObject: Here just tell him back the line ended </param>
+    private static IEnumerator CheckEndLine(NPCObject npc) {    
+        yield return new WaitForSeconds(0.2f);
+        while(writing) {
+            yield return null;
+        }
+        npc.EndLine();
+        yield return null;
+    }
+
+
+    /// <summary>
+    /// Shows the text character by character, including colors
+    /// </summary>
+    /// 
+    /// <param name="txtObj"> TMP_Text: The object visible on screen, the one we modify its text </param>
+    /// <param name="text"  >   string: The text that will be shown character by character       </param>
+    private static IEnumerator CharByChar(TMP_Text txtObj, string text) {
+
+        // Initialise some variables
+        char savedLetter = 'a';
+        string color     = "";
+
+        // For each character in the text
+		foreach (char letter in text.ToCharArray()) {
+
+            // If the there is a color atribute -> skip it
+            if(letter == '<' || savedLetter == '<') {
+                savedLetter = '<';
+
+                if(letter == '>'){
+                    savedLetter = '>';
+
+                    color += letter;
+                    txtObj.text += color;
+
+                    color = "";
+                } else {
+                    color += letter;
+                }
+
+            } else {
+
+                // Add the letter to the UI text field
+			    txtObj.text += letter;
+			    yield return new WaitForSeconds(GetPauseChar(letter));
+            }
+		}
+
+        // Turns the variable isWriting to false to know it ended
+        writing = false;
+	}
+
+
+
+    ////////// GET AND SET FUNCTIONS \\\\\\\\\\
+
+
+    /// <summary>
+    /// Returns the dialogue panel as GameObject
+    /// </summary>
+    /// 
+    /// <returns> GameObject: The dialoguePanel </returns>
     public static GameObject GetDialoguePanel() {
         return dialoguePanel;
     }
 
 
-    // GAMEOBJECT SETDIALOGUEPANEL(BOOL) :
-    // ---                                   ---
-    // Changes the dialogue panel active state
-    // ---                                   ---
+    /// <summary>
+    /// Changes the dialogue panel active state
+    /// </summary>
+    /// 
+    /// <param name="b"> bool: To set active or no the dialoguePanel </param>
     public static void SetDialoguePanel(bool b) {
         dialoguePanel.SetActive(b);
     }
 
 
-    // TMP_FONTASSER GETDIALOGUEFONT() :
-    // ---                                             ---
-    // Returns the dialogue font (TextMeshPro FontAsset)
-    // ---                                             ---
+    /// <summary>
+    /// Changes the dialogue panel prompt active state
+    /// </summary>
+    /// 
+    /// <param name="b"> bool: To set active or no the dialoguePanelPrompt </param>
+    public static void SetDialoguePrompt(bool b) {
+        dialoguePanelPrompt.SetActive(b);
+    }
+
+
+    /// <summary>
+    /// Returns the dialogue font
+    /// </summary>
+    /// 
+    /// <returns> TMP_FontAsset: The dialogue font </returns>
     public static TMP_FontAsset GetDialogueFont() {
         return dialogueFont;
     }
 
 
-    // INT GETDIALOGUENAMESIZE() :
-    // ---                                       ---
-    // Returns the dialogue font size for the name
-    // ---                                       ---
-    public static int GetDialogueNameSize() {
-        return nameSize;
-    }
-
-
-    // INT GETDIALOGUETEXTSIZE() :
-    // ---                                       ---
-    // Returns the dialogue font size for the text
-    // ---                                       ---
-    public static int GetDialogueTextSize() {
-        return textSize;
-    }
-
-
-    // COLOR GETDIALOGUENAMECOLOR() :
-    // ---                                                    ---
-    // Returns the correct color for showing names in dialogues
-    // ---                                                    ---
+    /// <summary>
+    /// Returns the correct color for showing names in dialogues
+    /// </summary>
+    /// 
+    /// <returns> Color: The used color to write names in dialogues </returns>
     public static Color GetDialogueNameColor() {
         return nameC;
     }
     
 
-    // COLOR GETDIALOGUEMONEYCOLOR() :
-    // ---                                                   ---
-    // Returns the correct color for showing Pems in dialogues
-    // ---                                                   ---
+    /// <summary>
+    /// Returns the correct color for showing Pems in dialogues
+    /// </summary>
+    /// 
+    /// <returns> Color: The used color for the Pems Symbol in dialogues </returns>
     public static Color GetDialogueMoneyColor() {
         return moneyC;
     }
 
 
-    // GAMEOBJECT GETCANVAS() :
-    // ---                                ---
-    // Returns the main canvas of the scene
-    // ---                                ---
+    /// <summary>
+    /// Returns the main canvas of the scene
+    /// </summary>
+    /// 
+    /// <returns> GameObject: The main canvas </returns>
     public static GameObject GetCanvas() {
         return canvas;
     }
 
 
-    // FLOAT[] GETCANVASSIZE() :
-    // ---                                            ---
-    // Returns a float array with : [0] = canvas width
-    //                          and [1] = canvas height
-    // ---                                            ---
+    /// <summary>
+    /// Returns the canvas's sizes
+    /// </summary>
+    /// 
+    /// <returns> Returns a float array with : [0] = canvas width
+    ///                                    and [1] = canvas height </returns>
     public static float[] GetCanvasSize() {
         float[] values = {canvasWidth, canvasHeight};
         return values;
     }
 
 
+    /// <summary>
+    /// Returns if text is still being written
+    /// </summary>
+    /// 
+    /// <returns> bool: True if the text is still being written </returns>
     public static bool IsWriting() {
         return writing;
     }
