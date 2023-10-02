@@ -37,25 +37,12 @@ public class DialogueLine {
 
                     switch(c) {
                         case 'n':
-                            replace = "<color=" + ToHex(ScreenTexts.GetDialogueNameColor()) + ">" + character.getName() + "</color>";
+                            replace = "%n" + character.getName();
                             break;
 
                         default:
-                            replace = "AAAAAAAAAAAAAAAAAAAAAAAAA";
                             break;
                     }
-                    break;
-
-
-                case '€':
-                    charSpe = true;
-
-                    index = Array.IndexOf(array, letter);
-
-                    start   = textLine.Substring(0, index);
-                    end     = textLine.Substring(index+1, textLine.Length - (index+1));
-                    replace = "<color=" + ToHex(ScreenTexts.GetDialogueMoneyColor()) + ">€</color>";
-
                     break;
 
                 default:
@@ -69,18 +56,6 @@ public class DialogueLine {
         } else {
             return textLine;
         }
-    }
-
-    private string FloatNormalizedToHex(float f) {
-        return Mathf.RoundToInt(f * 255f).ToString("X2");
-    }
-
-    private string ToHex(Color c) {
-        string r = FloatNormalizedToHex(c.r);
-        string g = FloatNormalizedToHex(c.g);
-        string b = FloatNormalizedToHex(c.b);
-
-        return "#"+r+g+b;
     }
     
 }

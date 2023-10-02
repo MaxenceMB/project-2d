@@ -979,10 +979,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialoguePanelObject: {fileID: 1773768129}
   dialogueFontAsset: {fileID: 11400000, guid: d60f1940eee3e6848aecf6a231eee330, type: 2}
-  textFontSize: 50
-  nameFontSize: 60
+  textFontSize: 20
+  nameFontSize: 25
   nameColor: {r: 0, g: 0.43311167, b: 1, a: 0}
   moneyColor: {r: 1, g: 0.70822835, b: 0, a: 0}
+  placesColor: {r: 0, g: 0.745283, b: 0.27641565, a: 0}
 --- !u!1001 &919396891
 PrefabInstance:
   m_ObjectHideFlags: 0
