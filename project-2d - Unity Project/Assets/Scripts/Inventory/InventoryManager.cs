@@ -142,4 +142,5 @@ public class InventoryManager : MonoBehaviour {
             player.GetChild(0).gameObject.SetActive(false);
         }
     }
+
 }
