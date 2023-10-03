@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using TMPro;
 using System;
+using System.Linq;
 
 
 /// <summary>
@@ -27,6 +28,7 @@ public class ScreenTexts : MonoBehaviour {
     [Space(10)]
     [SerializeField] private Color nameColor;                               // Color of character names in dialogues
     [SerializeField] private Color moneyColor;                              // Color of Pems coins character in dialogues
+    [SerializeField] private Color placesColor;                             // Color of places names in dialogues
 
 
     // --- Static versions --- //
@@ -34,7 +36,7 @@ public class ScreenTexts : MonoBehaviour {
     private static TMP_FontAsset dialogueFont;
     private static float         canvasWidth, canvasHeight;
     private static int           textSize, nameSize;
-    private static Color         nameC, moneyC;
+    private static Color         nameC, moneyC, placesC;
     private static bool          writing = false;   
     private static MonoBehaviour instance;
 
@@ -55,6 +57,7 @@ public class ScreenTexts : MonoBehaviour {
         nameSize      = nameFontSize;
         nameC         = nameColor;
         moneyC        = moneyColor;
+        placesC       = placesColor;
         instance      = this;
 
         // Gets canvas size
@@ -70,6 +73,8 @@ public class ScreenTexts : MonoBehaviour {
         dialoguePanelPrompt = dialoguePanel.transform.GetChild(0).gameObject;
         dialoguePanelPrompt.transform.position = new Vector2(0.78f*canvasWidth, 0.20f*canvasHeight);
         dialoguePanelPrompt.SetActive(false);
+
+        ScreenTexts.ShowText("OEOEOE", 30, TextPos.CENTER, false);
 
     }
 
@@ -101,6 +106,9 @@ public class ScreenTexts : MonoBehaviour {
         UIText.fontSize  = CorrectFontSize(fontSize);
         UIText.font      = GetDialogueFont();
         UIText.alignment = (TextAlignmentOptions)values[4];
+
+        // Adds the correct colors to the text
+        textToShow = ColorText(textToShow);
 
         // Show the text character by character if asked for
         if(charByChar) {
@@ -281,15 +289,123 @@ public class ScreenTexts : MonoBehaviour {
         return values;
     }
 
-    
+
+    /// <summary>
+    /// Puts the right colors attributes to the text
+    /// </summary>
+    /// 
+    /// <param name="text"> string: The text to modify </param>
+    /// <returns> string: The new correctly colored text </returns>
+    private static string ColorText(string text) {
+
+        // Initialise WAY TOO MUCH variables
+        char[] array       = text.ToCharArray();    // The text as an array of character (to check it char by char)
+        int    index       = 0;                     // Index of the first special character
+
+        string start       = "";                    // String taking all the text before the special character
+        string replace     = "";                    // Empty string that will contain the replacing part of the text
+        string end         = "";                    // String taking all the text after the special character
+
+        // For each character in the tex
+        foreach (char letter in array) {
+            switch(letter) {
+
+                // If the character is a '%', it means it will be a color attribute after
+                case '%':
+
+                    // Takes the character just after the '%'
+                    index = Array.IndexOf(array, letter);
+                    char c = array[index+1];
+
+                    // Make a string containing the word after the color tag
+                    string word    = "";
+                    int    indexW  = index+2;
+                    char   w       = array[indexW];
+                    char[] endWord = {' ', '.', ',', '!', '?'};
+                    while(endWord.Contains(w) == false) {
+                        word += w;
+                        indexW++;
+                        w = array[indexW];
+                    }
+
+                    // Saves the texts before and after
+                    start   = text.Substring(0, index);
+                    end     = text.Substring(indexW, text.Length - indexW);
+                    replace = "";
+
+                    switch(c) {
+                        case 'n': // Name color
+                            replace = "<color=" + ColorToHex(ScreenTexts.GetDialogueNameColor()) + ">" + word + "</color>";
+                            text = start + replace + end;
+                            array = text.ToCharArray();
+                            break;
+
+
+                        case 'p': // Places color
+                            replace = "<color=" + ColorToHex(ScreenTexts.GetDialoguePlacesColor()) + ">" + word + "</color>";
+                            text = start + replace + end;
+                            array = text.ToCharArray();
+                            break;
+
+
+                        default:
+                            break;
+                    }
+                    break;
+
+
+                // If the character is '€', just changes its color
+                case '€':
+
+                    index = Array.IndexOf(array, letter);
+
+                    start   = text.Substring(0, index);
+                    end     = text.Substring(index+1, text.Length - (index+1));
+                    replace = "<color=" + ColorToHex(ScreenTexts.GetDialogueMoneyColor()) + ">€</color>";
+
+                    text = start + replace + end;
+                    array = text.ToCharArray();
+
+                    break;
+
+
+                default:
+                    break;
+
+            }
+		}
+
+        return text;
+    }
+
+
+    /// <summary>
+    /// Returns a color in its hexadecimal code
+    /// </summary>
+    /// 
+    /// <param name="c"> Color: The color we want to get in Hex </param>
+    /// <returns> string: the hex code of the color </returns>
+    private static string ColorToHex(Color c) {
+        string r = Mathf.RoundToInt(c.r * 255f).ToString("X2");
+        string g = Mathf.RoundToInt(c.g * 255f).ToString("X2");
+        string b = Mathf.RoundToInt(c.b * 255f).ToString("X2");
+
+        return "#"+r+g+b;
+    }
+
+
     /// <summary>
     /// Calculates the adapted font size compared to the canvas's size
+    /// /!\ IMPORTANT                                                                               --- /!\
+    ///     It also multiplies the size by 4 because basic font sizes for the game were at like 100+
+    ///     So by multiplying by 4 the result, we can put as input values like 12, 20 etc...
+    /// /!\ ---                                                                                     --- /!\
     /// </summary>
     /// 
     /// <param name="fontSize"> float: Original font size value </param>
     /// <returns> int: The new adapted font size </returns>
     private static int CorrectFontSize(float fontSize) {
-        return (int)((canvasHeight+canvasWidth)*fontSize)/1775;
+        return (int)(((canvasHeight+canvasWidth)*fontSize)/3000)*4;
     }
 
 
@@ -416,6 +532,16 @@ public class ScreenTexts : MonoBehaviour {
     /// <returns> Color: The used color for the Pems Symbol in dialogues </returns>
     public static Color GetDialogueMoneyColor() {
         return moneyC;
+    }
+
+
+    /// <summary>
+    /// Returns the correct color for showing places in dialogues
+    /// </summary>
+    /// 
+    /// <returns> Color: The used color for the Pems Symbol in dialogues </returns>
+    public static Color GetDialoguePlacesColor() {
+        return placesC;
     }
 
 

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class DungeonGrid : MonoBehaviour {
 
-    private int offsetX = DungeonRoom.RoomXSize + 1;
-    private int offsetY = DungeonRoom.RoomYSize + 1;
+    private int offsetX = DungeonRoom.RoomXSize + 4;
+    private int offsetY = DungeonRoom.RoomYSize + 4;
 
     public GameObject[] dungeonRoomGO;
 
@@ -16,14 +16,14 @@ public class DungeonGrid : MonoBehaviour {
                 if (dungeonMap[x, y] > 0){
                     dungeonRoomGOTemp = Instantiate(dungeonRoomGO[0]);
                     dungeonRoomGOTemp.GetComponent<DungeonRoomDisplayer>().PlaceWalls(GetRoomAt(dungeonRooms, x, y));
-                    Instantiate(dungeonRoomGOTemp, new Vector3(x + x * offsetX, y + y * offsetY, 0), Quaternion.identity);
+                    Instantiate(dungeonRoomGOTemp, new Vector3(x * offsetX, y * offsetY, 0), Quaternion.identity);
                 }
             }
         }
         DungeonRoom farthestRoom = GetFarthestRoom(dungeonRooms);
         dungeonRoomGOTemp = Instantiate(dungeonRoomGO[1]);
         dungeonRoomGOTemp.GetComponent<DungeonRoomDisplayer>().PlaceWalls(farthestRoom);
-        Instantiate(dungeonRoomGOTemp, new Vector3(farthestRoom.roomX + farthestRoom.roomX * offsetX, farthestRoom.roomY + farthestRoom.roomY * offsetY, 0), Quaternion.identity);
+        Instantiate(dungeonRoomGOTemp, new Vector3(farthestRoom.roomX * offsetX, farthestRoom.roomY * offsetY, 0), Quaternion.identity);
     }
 
     public DungeonRoom GetRoomAt(DungeonRoom[] dungeonRooms, int x, int y){

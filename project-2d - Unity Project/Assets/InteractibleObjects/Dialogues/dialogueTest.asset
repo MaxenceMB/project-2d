@@ -20,6 +20,6 @@ MonoBehaviour:
   - character: {fileID: 11400000, guid: e7e3b8c816ec77b41a8a15c63a74abda, type: 2}
     textLine: Oui... C'est un steak...
   - character: {fileID: 11400000, guid: e7e3b8c816ec77b41a8a15c63a74abda, type: 2}
-    textLine: "Il a coute 53\u20AC!"
+    textLine: "Je l'ai achete a %pIntermarche, Il a coute 53\u20AC!"
   - character: {fileID: 11400000, guid: e7e3b8c816ec77b41a8a15c63a74abda, type: 2}
     textLine: Bon bah, bisous!
