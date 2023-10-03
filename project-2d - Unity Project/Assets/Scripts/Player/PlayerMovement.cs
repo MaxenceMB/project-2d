@@ -64,4 +64,12 @@ public class PlayerMovement : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// sets the movement speed of the player based on his speed stat
+    /// </summary>
+    /// <param name="spd"> the speed stat </param>
+    public void setSpeed(int spd) {
+        this.speed = spd;
+    }
+
 }

@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -14,55 +11,38 @@ public class ShopManager : MonoBehaviour
 {
     /// the shop's canvas
     [SerializeField] GameObject canvas;
-
     /// the player
     [SerializeField] GameObject player;
-
     /// the prefab corresponding to an item slot in the shop
     [SerializeField] GameObject itemSlotShopPrefab;
-    
     /// the prefab corresponding to the different shop options
     [SerializeField] GameObject shopOptionsPrefab;
-
     [SerializeField] GameObject inventorySlotPrefab;
-
     /// array containing all the items on sale in this shop
     [SerializeField] Item[] itemsOnSale;
-
     /// array containing all the options available for the shop
     private string[] shopOptions = {"Buy", "Sell", "Leave", "Selection"};
-
     /// the prefab corresponding to the cursor indicating the selected item
     [SerializeField] GameObject cursorItemShopPrefab;
-
     /// the prefab corresponding to the cursor indicating the selected option
     [SerializeField] GameObject cursorOptionShopPrefab;
-
     /// the index indicating the currently selected item/option
     private int currentSlot;
-
     /// the item currently selected
     private Item selectedItem;
-
     /// the option currently selected
-   private string selectedShopOption;
-
+    private string selectedShopOption;
     /// the vector used to place the different slots
     private Vector3 slotsPosition;
-
     /// the vector corresponding to the cursor indicating the currently selected item
     private Vector3 cursorPosition;
-
     // the cursor indicating the currently selected option
     private GameObject optionsCursor;
-
     // the cursor indicating the currently selected item
     private GameObject itemsCursor;
-
     /// boolean indicating whether the player can reach and interact
     /// with the shop depending on if they are in the shop's interaction area
     private bool reachable;
-
     // boolean indicating whether the player bought something or not
     private bool purchaseDone;
 
@@ -90,12 +70,14 @@ public class ShopManager : MonoBehaviour
 
             //if the current shop option is selection
             if (this.selectedShopOption == "Selection") {
-                if ((Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) && currentSlot < 2) {
+                if ((Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow) ||
+                Input.GetAxis("Mouse ScrollWheel") < 0f) && currentSlot < 2) {
                     currentSlot++;
                     optionsCursor.transform.position += new Vector3(0,-130, 0);
                     SetSpeechTextWithOption(shopOptions[currentSlot]);
                 }
-                if ((Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.UpArrow)) && currentSlot > 0) {
+                if ((Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.UpArrow) ||
+                Input.GetAxis("Mouse ScrollWheel") > 0f) && currentSlot > 0) {
                     currentSlot--;
                     optionsCursor.transform.position += new Vector3(0,130,0);
                     SetSpeechTextWithOption(shopOptions[currentSlot]);
@@ -107,19 +89,21 @@ public class ShopManager : MonoBehaviour
                     displaySelectedOption();
                 }
                 //if X is pressed, the shop is closed
-                if ((Input.GetKeyDown(KeyCode.X))) {
+                if ((Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.Escape))) {
                     closeShop();
                 }
 
             //if the current shop option is buy
             } else if (this.selectedShopOption == "Buy") {
-                if ((Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) && currentSlot < itemsOnSale.Length-1) {
+                if ((Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow) ||
+                Input.GetAxis("Mouse ScrollWheel") < 0f) && currentSlot < itemsOnSale.Length-1) {
                     currentSlot++;
                     itemsCursor.transform.position += new Vector3(0,-130,0);
                     this.selectedItem = itemsOnSale[currentSlot];
                     SetSpeechTextWithItem();
                 }
-                if ((Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.UpArrow)) && currentSlot > 0) {
+                if ((Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.UpArrow) ||
+                Input.GetAxis("Mouse ScrollWheel") > 0f) && currentSlot > 0) {
                     currentSlot--;
                     itemsCursor.transform.position += new Vector3(0,130,0);
                     this.selectedItem = itemsOnSale[currentSlot];
@@ -142,6 +126,9 @@ public class ShopManager : MonoBehaviour
                     selectedShopOption = "Selection";
                     displaySelectedOption();
                     SetSpeechTextWithOption(shopOptions[currentSlot]);
+                }
+                if (Input.GetKeyDown(KeyCode.Escape)) {
+                    closeShop();
                 }
             }
 
@@ -240,6 +227,7 @@ public class ShopManager : MonoBehaviour
         SetSpeechTextWithOption("Selection");
         displaySelectedOption();
         GameObject.Find("Player").GetComponent<PlayerMovement>().canMove = true;
+        GameObject.Find("InventoryManager").GetComponent<InventoryManager>().canAccessInventory = true;
     }
 
     /// <summary>
@@ -247,6 +235,7 @@ public class ShopManager : MonoBehaviour
     /// </summary>
     private void openShop() {
         canvas.SetActive(true);
+        GameObject.Find("InventoryManager").GetComponent<InventoryManager>().canAccessInventory = false;
         GameObject.Find("Player").GetComponent<PlayerMovement>().canMove = false;
     }
     
