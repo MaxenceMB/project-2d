@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DungeonGrid : MonoBehaviour {
@@ -11,8 +12,6 @@ public class DungeonGrid : MonoBehaviour {
 
     private GameObject[] placedRooms;
     private int placedRoomsCount = 0;
-
-    public Camera camera;
 
     public int currentRoom;
 
@@ -27,6 +26,7 @@ public class DungeonGrid : MonoBehaviour {
             }
             DungeonRoomDisplayer roomDisplayer = placedRooms[placedRoomsCount].GetComponent<DungeonRoomDisplayer>();
             roomDisplayer.room = dungeonRooms[i];
+            roomDisplayer.roomID = dungeonRooms[i].roomID;
             roomDisplayer.ConfigureRoom();
             Instantiate(placedRooms[placedRoomsCount], new Vector3(dungeonRooms[i].roomX * offsetX, dungeonRooms[i].roomY * offsetY, 0), Quaternion.identity);
             placedRoomsCount++;

@@ -32,9 +32,7 @@ public class CameraController : MonoBehaviour {
         maxX = levelRenderer.bounds.max.x - camWidthDimensions  / 2f;
         minY = levelRenderer.bounds.min.y + camHeightDimensions / 2f;
         maxY = levelRenderer.bounds.max.y - camHeightDimensions / 2f;
-
     }
-
 
     private void FixedUpdate() {
 

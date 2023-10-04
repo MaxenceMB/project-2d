@@ -9,6 +9,8 @@ public class DungeonRoomDisplayer : MonoBehaviour {
 
     public DungeonRoom room;
 
+    public int roomID;
+
     public Tilemap groundTilemap;
     public Tilemap wallsTilemap;
     public Tilemap doorsTilemap;
@@ -41,7 +43,7 @@ public class DungeonRoomDisplayer : MonoBehaviour {
         bottomLeft = new Vector2Int((int) bounds.min.x - 1, (int) bounds.min.y - 1);
         bottomRight = new Vector2Int((int) bounds.max.x, (int) bounds.min.y - 1);
 
-        PlaceEnteringDoor(room);
+        PlaceEnteringDoor();
 
         // Placing walls ---
         // Top wall
@@ -139,7 +141,7 @@ public class DungeonRoomDisplayer : MonoBehaviour {
 
     }
 
-    public void PlaceEnteringDoor(DungeonRoom room){
+    public void PlaceEnteringDoor(){
         if (room.isStartingRoom){
             switch (room.enteringDirection){
                 case Direction.TOP:

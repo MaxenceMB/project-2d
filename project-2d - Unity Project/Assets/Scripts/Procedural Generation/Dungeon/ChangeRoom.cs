@@ -7,7 +7,10 @@ public class ChangeRoom : MonoBehaviour {
     public DungeonRoomDisplayer roomDisplayer;
 
     private void OnTriggerEnter2D(Collider2D other) {
-        //if ()
+        Camera camera = FindObjectOfType<Camera>();
+        camera.GetComponent<DungeonCameraController>().PlaceCameraAtRoom(transform.parent.gameObject);
     }
+
+    
 
 }
