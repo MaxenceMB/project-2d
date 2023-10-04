@@ -12,38 +12,47 @@ public class InventoryManager : MonoBehaviour {
 
     public int selectedSlot = -1;
 
+    public bool canAccessInventory;
+
 
     /// <summary>
     /// On start, set the first slot as selected
     /// </summary>
     private void Start() {
         ChangeSelectedSlot(0);
+        canAccessInventory = true;
     }
 
     public void Update(){
-        // Select an inventory slot with the alphanumerical keys (1-5)
-        if(Input.inputString != null){
-            bool isNumber = int.TryParse(Input.inputString, out int number);
-            if (isNumber && (number >= 0 && number <= 5)){
-                ChangeSelectedSlot(number - 1);
-                selectedSlot = number - 1;
+
+        if (canAccessInventory) {
+
+            // Select an inventory slot with the alphanumerical keys (1-5)
+            if(Input.inputString != null){
+                bool isNumber = int.TryParse(Input.inputString, out int number);
+                if (isNumber && (number >= 0 && number <= 5)){
+                    ChangeSelectedSlot(number - 1);
+                    selectedSlot = number - 1;
+                }
             }
-        }
 
-        // Scroll trough toolbar's slots with the mouse scrollwheel
-        if (Input.GetAxis("Mouse ScrollWheel") > 0f){
-            ChangeSelectedSlot(Mathf.Max(selectedSlot - 1, 0));
-        }
-        if (Input.GetAxis("Mouse ScrollWheel") < 0f){
-            ChangeSelectedSlot(Mathf.Min(selectedSlot + 1, 4));
-        }
+            // Scroll trough toolbar's slots with the mouse scrollwheel
+            if (Input.GetAxis("Mouse ScrollWheel") > 0f){
+                ChangeSelectedSlot(Mathf.Max(selectedSlot - 1, 0));
+            }
+            if (Input.GetAxis("Mouse ScrollWheel") < 0f){
+                ChangeSelectedSlot(Mathf.Min(selectedSlot + 1, 4));
+            }
 
-        // Use item in selected slot
-        if (Input.GetKeyUp(KeyCode.F)){
-            UseSelectedItem();
+            // Use item in selected slot
+            if (Input.GetKeyUp(KeyCode.F)){
+                UseSelectedItem();
+            }
+            
+            ShowItemInPlayerHands();
+
         }
-        
-        ShowItemInPlayerHands();
+    
     }
 
 
@@ -85,7 +94,6 @@ public class InventoryManager : MonoBehaviour {
         return false;
     }
 
-
     /// <summary>
     /// Spawns the given item in the given slot
     /// </summary>
@@ -96,7 +104,6 @@ public class InventoryManager : MonoBehaviour {
         InventoryItem inventoryItem = newItemGO.GetComponent<InventoryItem>();
         inventoryItem.InitialiseItem(item);
     }
-
 
     /// <summary>
     /// Returns the selected slot's item or null if no item is present in that slot
@@ -109,7 +116,6 @@ public class InventoryManager : MonoBehaviour {
         }
         return null;
     }
-
 
     /// <summary>
     /// Uses the item in the select slot if it is a consumable
@@ -127,7 +133,6 @@ public class InventoryManager : MonoBehaviour {
             }
         }
     }
-
 
     /// <summary>
     /// Displays the item in the selected slot on the player sprite

@@ -29,7 +29,7 @@ public class PouchManager : MonoBehaviour
     void Start()
     {
         balance = 200;
-        PouchDisplay.SetText(balance.ToString());
+        this.displayBalance();
         CRShakePouch_running = false;
     }
 
@@ -67,7 +67,7 @@ public class PouchManager : MonoBehaviour
     /// <param name="amount"> amount of money added </param>
     public void GainMoney(int amount) {
         balance+=amount;
-        PouchDisplay.SetText(balance.ToString());
+        this.displayBalance();
     } 
 
     /// <summary>
@@ -77,6 +77,7 @@ public class PouchManager : MonoBehaviour
     public void LoseMoney(int amount) {
         balance-=amount;
         PouchDisplay.SetText(balance.ToString());
+        this.displayBalance();
     }
 
     /// <summary>
@@ -100,6 +101,13 @@ public class PouchManager : MonoBehaviour
             }
         }
         return balance >= amount;
+    }
+
+    /// <summary>
+    /// refreshes the current balance displayed in the pouch display
+    /// </summary>
+    public void displayBalance() {
+        PouchDisplay.SetText(balance.ToString()+"€");
     }
 
 }
