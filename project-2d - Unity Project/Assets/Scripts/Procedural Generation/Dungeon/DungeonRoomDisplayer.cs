@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.U2D;
 
 public class DungeonRoomDisplayer : MonoBehaviour {
+
+    public DungeonRoom room;
 
     public Tilemap groundTilemap;
     public Tilemap wallsTilemap;
@@ -22,18 +25,23 @@ public class DungeonRoomDisplayer : MonoBehaviour {
 
     public Tile[] corners;
 
-    public void PlaceWalls(DungeonRoom room){
+    Vector2Int topLeft;
+    Vector2Int topRight;
+    Vector2Int bottomLeft;
+    Vector2Int bottomRight;
+
+    public void ConfigureRoom(){
         wallsTilemap.transform.position = groundTilemap.transform.position;
         doorsTilemap.transform.position = groundTilemap.transform.position;
-        Bounds bounds = groundTilemap.localBounds;
-        Vector2Int topLeft = new Vector2Int((int) bounds.min.x - 1, (int) bounds.max.y);
-        Vector2Int topRight = new Vector2Int((int) bounds.max.x, (int) bounds.max.y);
-        Vector2Int bottomLeft = new Vector2Int((int) bounds.min.x - 1, (int) bounds.min.y - 1);
-        Vector2Int bottomRight = new Vector2Int((int) bounds.max.x, (int) bounds.min.y - 1);
 
-        if (room.isStartingRoom){
-            groundTilemap.SetTile(new Vector3Int(0, 0, 0), topDoor[0]);
-        }
+        // Setting up the tilemap
+        Bounds bounds = groundTilemap.localBounds;
+        topLeft = new Vector2Int((int) bounds.min.x - 1, (int) bounds.max.y);
+        topRight = new Vector2Int((int) bounds.max.x, (int) bounds.max.y);
+        bottomLeft = new Vector2Int((int) bounds.min.x - 1, (int) bounds.min.y - 1);
+        bottomRight = new Vector2Int((int) bounds.max.x, (int) bounds.min.y - 1);
+
+        PlaceEnteringDoor(room);
 
         // Placing walls ---
         // Top wall
@@ -125,6 +133,41 @@ public class DungeonRoomDisplayer : MonoBehaviour {
         // Bottom right 
         wallsTilemap.SetTile(new Vector3Int(bottomRight.x, bottomRight.y, 0), corners[6]);
         wallsTilemap.SetTile(new Vector3Int(bottomRight.x + 1, bottomRight.y - 1, 0), corners[7]);
+    }
+
+    public void PlaceSpawnPoint(){
+
+    }
+
+    public void PlaceEnteringDoor(DungeonRoom room){
+        if (room.isStartingRoom){
+            switch (room.enteringDirection){
+                case Direction.TOP:
+                    doorsTilemap.SetTile(new Vector3Int(-1, topLeft.y, 0), topDoor[0]);
+                    doorsTilemap.SetTile(new Vector3Int(0, topLeft.y, 0), topDoor[1]);
+                    doorsTilemap.SetTile(new Vector3Int(-1, topLeft.y + 1, 0), topDoor[2]);
+                    doorsTilemap.SetTile(new Vector3Int(0, topLeft.y + 1, 0), topDoor[3]);
+                    break; 
+                case Direction.RIGHT:
+                    doorsTilemap.SetTile(new Vector3Int(bottomRight.x, 0, 0), rightDoor[0]);
+                    doorsTilemap.SetTile(new Vector3Int(bottomRight.x, -1, 0), rightDoor[1]);
+                    doorsTilemap.SetTile(new Vector3Int(bottomRight.x + 1, 0, 0), rightDoor[2]);
+                    doorsTilemap.SetTile(new Vector3Int(bottomRight.x + 1, -1, 0), rightDoor[3]);
+                    break;
+                case Direction.BOTTOM:
+                    doorsTilemap.SetTile(new Vector3Int(-1, bottomLeft.y, 0), bottomDoor[0]);
+                    doorsTilemap.SetTile(new Vector3Int(0, bottomLeft.y, 0), bottomDoor[1]);
+                    doorsTilemap.SetTile(new Vector3Int(-1, bottomLeft.y - 1, 0), bottomDoor[2]);
+                    doorsTilemap.SetTile(new Vector3Int(0, bottomLeft.y - 1, 0), bottomDoor[3]);
+                    break;
+                case Direction.LEFT:
+                    doorsTilemap.SetTile(new Vector3Int(bottomLeft.x, 0, 0), leftDoor[0]);
+                    doorsTilemap.SetTile(new Vector3Int(bottomLeft.x, -1, 0), leftDoor[1]);
+                    doorsTilemap.SetTile(new Vector3Int(bottomLeft.x - 1, 0, 0), leftDoor[2]);
+                    doorsTilemap.SetTile(new Vector3Int(bottomLeft.x - 1, -1, 0), leftDoor[3]);
+                    break;
+            }
+        }
     }
 }
 

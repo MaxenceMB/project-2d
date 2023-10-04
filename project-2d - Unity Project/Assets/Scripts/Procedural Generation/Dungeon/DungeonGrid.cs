@@ -4,36 +4,33 @@ using UnityEngine;
 
 public class DungeonGrid : MonoBehaviour {
 
-    private int offsetX = DungeonRoom.RoomXSize + 4;
-    private int offsetY = DungeonRoom.RoomYSize + 4;
+    private int offsetX = DungeonRoom.X_SIZE + 4;
+    private int offsetY = DungeonRoom.Y_SIZE + 4;
 
     public GameObject[] dungeonRoomGO;
 
-    public void PlaceAllRooms(DungeonRoom[] dungeonRooms, int[,] dungeonMap) {
-        GameObject dungeonRoomGOTemp = null;
-        for (int x = 0; x < DungeonMapGenerator.DUNGEON_WIDTH; x++){
-            for (int y = 0; y < DungeonMapGenerator.DUNGEON_HEIGHT; y++){
-                if (dungeonMap[x, y] > 0){
-                    dungeonRoomGOTemp = Instantiate(dungeonRoomGO[0]);
-                    dungeonRoomGOTemp.GetComponent<DungeonRoomDisplayer>().PlaceWalls(GetRoomAt(dungeonRooms, x, y));
-                    Instantiate(dungeonRoomGOTemp, new Vector3(x * offsetX, y * offsetY, 0), Quaternion.identity);
-                }
-            }
-        }
-        DungeonRoom farthestRoom = GetFarthestRoom(dungeonRooms);
-        dungeonRoomGOTemp = Instantiate(dungeonRoomGO[1]);
-        dungeonRoomGOTemp.GetComponent<DungeonRoomDisplayer>().PlaceWalls(farthestRoom);
-        Instantiate(dungeonRoomGOTemp, new Vector3(farthestRoom.roomX * offsetX, farthestRoom.roomY * offsetY, 0), Quaternion.identity);
-    }
+    private GameObject[] placedRooms;
+    private int placedRoomsCount = 0;
 
-    public DungeonRoom GetRoomAt(DungeonRoom[] dungeonRooms, int x, int y){
+    public Camera camera;
+
+    public int currentRoom;
+
+    public void PlaceAllRooms(DungeonRoom[] dungeonRooms, int[,] dungeonMap) {
+        placedRooms = new GameObject[dungeonRooms.Length];
+
         for (int i = 0; i < dungeonRooms.Length; i++){
-            if (dungeonRooms[i].roomX == x &&
-                dungeonRooms[i].roomY == y){
-                    return dungeonRooms[i];
+            if (dungeonRooms[i] == GetFarthestRoom(dungeonRooms)){
+                placedRooms[placedRoomsCount] = Instantiate(dungeonRoomGO[1]);
+            } else {
+                placedRooms[placedRoomsCount] = Instantiate(dungeonRoomGO[0]);
             }
+            DungeonRoomDisplayer roomDisplayer = placedRooms[placedRoomsCount].GetComponent<DungeonRoomDisplayer>();
+            roomDisplayer.room = dungeonRooms[i];
+            roomDisplayer.ConfigureRoom();
+            Instantiate(placedRooms[placedRoomsCount], new Vector3(dungeonRooms[i].roomX * offsetX, dungeonRooms[i].roomY * offsetY, 0), Quaternion.identity);
+            placedRoomsCount++;
         }
-        return null;
     }
 
     public DungeonRoom GetFarthestRoom(DungeonRoom[] dungeonRooms){

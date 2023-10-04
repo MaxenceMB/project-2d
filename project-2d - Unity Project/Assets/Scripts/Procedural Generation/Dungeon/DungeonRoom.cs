@@ -7,8 +7,10 @@ using UnityEngine.Tilemaps;
 
 public class DungeonRoom {
 
-    public static int RoomXSize = 10;
-    public static int RoomYSize = 6;
+    public static int X_SIZE = 10;
+    public static int Y_SIZE = 6;
+
+    public int roomID;
 
     public DungeonRoom topRoom = null;
     public DungeonRoom rightRoom = null;

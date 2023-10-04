@@ -55,8 +55,11 @@ public class DungeonMapGenerator : MonoBehaviour {
         // Generate starting room entry door direction
         int entry = Random.Range(0,4);
         PlaceRoom(startingRoomX, startingRoomY, (Direction) entry, RoomType.VOID);
-        dungeonRooms[placedRoomsCount] = new DungeonRoom(startingRoomX, startingRoomY, true);
+        dungeonRooms[placedRoomsCount] = new DungeonRoom(startingRoomX, startingRoomY, true){
+            roomID = 0
+        };
         dungeonRooms[placedRoomsCount].SetEntryDoor((Direction) entry);
+
         // Start placing rooms around other rooms starting from the starting room 
         int iteration = 0;
         int currentRoom = 0;
@@ -101,6 +104,7 @@ public class DungeonMapGenerator : MonoBehaviour {
                         placedRoomsCoordinates[placedRoomsCount] = placedRoomCoordinates;
                         dungeonRooms[placedRoomsCount] = new DungeonRoom(placedRoomCoordinates.x, placedRoomCoordinates.y, false)
                         {
+                            roomID = placedRoomsCount,
                             distanceFromStartingRoom = dungeonRooms[currentRoom].distanceFromStartingRoom + 1
                         };
                         dungeonRooms[currentRoom].SetNeighborRoom(dungeonRooms[placedRoomsCount], direction);
