@@ -10,17 +10,24 @@ public class SignObject : ScriptableObject {
     [SerializeField][TextArea(5, 20)] private string signText;
     private bool reading = false;
 
+    private PlayerMovement pm;
+
+    private void LoadPM() {
+        pm = GameObject.Find("Player").gameObject.GetComponent<PlayerMovement>();
+    }
+
     public void Interact() {
+        if(pm == null) LoadPM();
 
         // Displays all chats in order
         if(!reading) {
-            ScreenTexts.ShowText(signText, 50, TextPos.CENTER, true);
+            pm.SetCanMove(false);
+            ScreenTexts.ShowText(signText, 50, TextPos.CENTER, charByChar: true);
             reading = true;
         } else {  // Ending condition
+            pm.SetCanMove(true);
             ScreenTexts.HideText();
             reading = false;
-            
-            PlayerInteractions.state = InteractStates.End;
         }
     }
 

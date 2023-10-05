@@ -10,16 +10,21 @@ public class NPCObject : ScriptableObject {
     [SerializeField] private Dialogue dialogue;
     private int countDialogue = 0;
 
+    private PlayerMovement pm;
+
     private void OnEnable() {
         countDialogue = 0;
     }
 
     public void Interact() {
-        ScreenTexts.HideText();
+        if(pm == null) LoadPM();
+
+        ScreenTexts.HideText(true);
         ScreenTexts.SetDialoguePrompt(false);
 
         // Displays all chats in order
         if(countDialogue < dialogue.getSize()) {
+            pm.SetCanMove(false);
             if(ScreenTexts.IsWriting()) {
                 ScreenTexts.StopCharByChar(this);
                 ScreenTexts.ShowDialogueText(dialogue.getLine(countDialogue-1).getName(), dialogue.getLine(countDialogue-1).getText(), false);
@@ -28,7 +33,7 @@ public class NPCObject : ScriptableObject {
                 ScreenTexts.CheckNPCEndLine(this);
             }
         } else {
-            PlayerInteractions.state = InteractStates.End;
+            pm.SetCanMove(true);
             countDialogue = 0;
         }
     }
@@ -36,6 +41,10 @@ public class NPCObject : ScriptableObject {
     public void EndLine() {
         ScreenTexts.SetDialoguePrompt(true);
         countDialogue++;
+    }
+
+    private void LoadPM() {
+        pm = GameObject.Find("Player").gameObject.GetComponent<PlayerMovement>();
     }
 
     public string getName() { return nickname; }

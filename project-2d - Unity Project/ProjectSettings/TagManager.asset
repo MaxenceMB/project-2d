@@ -8,6 +8,7 @@ TagManager:
   - Interactible
   - Enemy
   - TextUI
+  - DialogueTextUI
   layers:
   - Default
   - TransparentFX

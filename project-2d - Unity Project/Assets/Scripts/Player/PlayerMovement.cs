@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour {
     [Header("Movement")]
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private int speed;
-    [HideInInspector] public bool canMove = true;
+    [HideInInspector] private bool canMove = true;
 
     [Header("Dash")]
     [Range(0, 10)][SerializeField] private float dashForce;
@@ -70,6 +70,12 @@ public class PlayerMovement : MonoBehaviour {
     /// <param name="spd"> the speed stat </param>
     public void setSpeed(int spd) {
         this.speed = spd;
+
+    }
+
+    
+    public void SetCanMove(bool b) {
+        canMove = b;
     }
 
 }

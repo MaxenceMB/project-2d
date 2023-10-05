@@ -8,7 +8,7 @@ using System.Linq;
 /// <summary>
 /// Enumeration used to positionate the text correctly when using ShowText()
 /// </summary>
-public enum TextPos { CENTER, TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT, DIALOGUE_TEXT, DIALOGUE_NAME };
+public enum TextPos { CENTER, TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT, DIALOGUE_TEXT, DIALOGUE_NAME, SHOP_TEXT };
 
 
 /// <summary>
@@ -73,9 +73,6 @@ public class ScreenTexts : MonoBehaviour {
         dialoguePanelPrompt = dialoguePanel.transform.GetChild(0).gameObject;
         dialoguePanelPrompt.transform.position = new Vector2(0.78f*canvasWidth, 0.20f*canvasHeight);
         dialoguePanelPrompt.SetActive(false);
-
-        ScreenTexts.ShowText("OEOEOE", 30, TextPos.CENTER, false);
-
     }
 
 
@@ -87,13 +84,13 @@ public class ScreenTexts : MonoBehaviour {
     /// <param name="fontSize"  >     int: The font size                                                          </param>
     /// <param name="pos"       > TextPos: The position on screen                                                 </param>
     /// <param name="charByChar">    bool: Specifies if the text will be shown directly or character by character </param>
-    public static void ShowText(string textToShow, float fontSize, TextPos pos, bool charByChar) {
+    public static void ShowText(string textToShow, float fontSize, TextPos pos, Color? textColor = null, bool charByChar = false, bool dialogue = false) {
 
         // Create the text game object
         GameObject textObj = new GameObject("textObj_");        
         TMP_Text UIText    = textObj.AddComponent<TextMeshProUGUI>();
         textObj.transform.SetParent(canvas.transform);
-        textObj.tag = "TextUI";
+        textObj.tag = (dialogue) ? "DialogueTextUI" : "TextUI";
         
         // Gets the position on screen
         float[] values = GetPosValues(pos);
@@ -103,9 +100,11 @@ public class ScreenTexts : MonoBehaviour {
         textObj.GetComponent<RectTransform>().sizeDelta = new Vector2(values[2], values[3]);
 
         // Assigning text and fontsize
-        UIText.fontSize  = CorrectFontSize(fontSize);
-        UIText.font      = GetDialogueFont();
-        UIText.alignment = (TextAlignmentOptions)values[4];
+        UIText.fontSize    = CorrectFontSize(fontSize);
+        UIText.font        = GetDialogueFont();
+        UIText.alignment   = (TextAlignmentOptions)values[4];
+        UIText.color       = (textColor == null) ? Color.white : (Color)textColor;
+        UIText.lineSpacing = -30.0f;
 
         // Adds the correct colors to the text
         textToShow = ColorText(textToShow);
@@ -134,8 +133,8 @@ public class ScreenTexts : MonoBehaviour {
         SetDialoguePanel(true);
 
         // Write both texts, name and text
-        ShowText(charName,   nameSize, TextPos.DIALOGUE_NAME, false);
-        ShowText(textToShow, textSize, TextPos.DIALOGUE_TEXT, charByChar);
+        ShowText(charName,   nameSize, TextPos.DIALOGUE_NAME, charByChar: false,      dialogue: true);
+        ShowText(textToShow, textSize, TextPos.DIALOGUE_TEXT, charByChar: charByChar, dialogue: true);
     }
 
 
@@ -143,14 +142,21 @@ public class ScreenTexts : MonoBehaviour {
     /// Hides all the texts that are currently shown on screen
     /// and hides dialogue text box if shown
     /// </summary>
-    public static void HideText() {
+    public static void HideText(bool dialogueOnly = false) {
 
         // Finds all the texts in scene
-        GameObject[] texts = GameObject.FindGameObjectsWithTag("TextUI");
+        GameObject[] dialogueTexts = GameObject.FindGameObjectsWithTag("DialogueTextUI");        
 
         // For each of them: destroy
-        foreach(GameObject text in texts) {
-            GameObject.Destroy(text);
+        foreach(GameObject text in dialogueTexts) {
+             GameObject.Destroy(text);
+        }
+
+        if(!dialogueOnly) {
+            GameObject[] texts = GameObject.FindGameObjectsWithTag("TextUI");        
+            foreach(GameObject text in texts) {
+                GameObject.Destroy(text);
+            }
         }
 
         // If dialogue box is visible, turn it off
@@ -274,6 +280,15 @@ public class ScreenTexts : MonoBehaviour {
                 values[3] = 0.10f * canvasHeight;
 
                 values[4] = (float)TextAlignmentOptions.Left;
+                break;
+
+            case TextPos.SHOP_TEXT:
+                values[0] = 0.607f * canvasWidth;
+                values[1] = 0.500f * canvasHeight;
+                values[2] = 0.180f * canvasWidth;
+                values[3] = 0.420f * canvasHeight;
+
+                values[4] = (float)TextAlignmentOptions.TopJustified;
                 break;
 
             default:
@@ -404,7 +419,7 @@ public class ScreenTexts : MonoBehaviour {
     /// 
     /// <param name="fontSize"> float: Original font size value </param>
     /// <returns> int: The new adapted font size </returns>
-    private static int CorrectFontSize(float fontSize) {
+    public static int CorrectFontSize(float fontSize) {
         return (int)(((canvasHeight+canvasWidth)*fontSize)/3000)*4;
     }
 

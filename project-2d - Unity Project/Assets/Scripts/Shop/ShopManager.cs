@@ -226,8 +226,8 @@ public class ShopManager : MonoBehaviour
         purchaseDone = false;
         SetSpeechTextWithOption("Selection");
         displaySelectedOption();
-        GameObject.Find("Player").GetComponent<PlayerMovement>().canMove = true;
         GameObject.Find("InventoryManager").GetComponent<InventoryManager>().canAccessInventory = true;
+        GameObject.Find("Player").GetComponent<PlayerMovement>().SetCanMove(true);
     }
 
     /// <summary>
@@ -236,7 +236,7 @@ public class ShopManager : MonoBehaviour
     private void openShop() {
         canvas.SetActive(true);
         GameObject.Find("InventoryManager").GetComponent<InventoryManager>().canAccessInventory = false;
-        GameObject.Find("Player").GetComponent<PlayerMovement>().canMove = false;
+        GameObject.Find("Player").GetComponent<PlayerMovement>().SetCanMove(false);
     }
     
     /// <summary>

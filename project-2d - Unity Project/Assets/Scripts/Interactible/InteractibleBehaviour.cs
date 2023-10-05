@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public enum InteractibleType { PNJ, Chest, Sign, NotInteractible };
+public enum InteractibleType { NPC, Chest, Sign, NotInteractible };
 
 
 public class InteractibleBehaviour : MonoBehaviour {
@@ -35,10 +35,10 @@ public class InteractibleBehaviour : MonoBehaviour {
 
     public void Interact() {
         switch(type) {
-            case InteractibleType.PNJ:
+            case InteractibleType.NPC:
                 if(interactibleObject is NPCObject) {
-                    NPCObject pnj = (NPCObject)interactibleObject;
-                    pnj.Interact(); 
+                    NPCObject npc = (NPCObject)interactibleObject;
+                    npc.Interact(); 
                 }
                 break;
             case InteractibleType.Chest:
