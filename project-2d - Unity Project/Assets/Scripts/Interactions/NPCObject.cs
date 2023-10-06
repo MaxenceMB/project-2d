@@ -4,7 +4,8 @@ using UnityEngine;
 public class NPCObject : ScriptableObject {
     
     [Header("PNJ Object")]
-    [SerializeField] private string nickname;
+    [SerializeField]  private string nickname;
+    [HideInInspector] public  bool   canInteract = true;
 
     [Header("Dialogues")]
     [SerializeField] private Dialogue dialogue;
@@ -12,10 +13,18 @@ public class NPCObject : ScriptableObject {
 
     private PlayerMovement pm;
 
+
+    /// <summary>
+    /// 
+    /// </summary>
     private void OnEnable() {
         countDialogue = 0;
     }
 
+
+    /// <summary>
+    /// 
+    /// </summary>
     public void Interact() {
         if(pm == null) LoadPM();
 
@@ -25,6 +34,7 @@ public class NPCObject : ScriptableObject {
         // Displays all chats in order
         if(countDialogue < dialogue.getSize()) {
             pm.SetCanMove(false);
+
             if(ScreenTexts.IsWriting()) {
                 ScreenTexts.StopCharByChar(this);
                 ScreenTexts.ShowDialogueText(dialogue.getLine(countDialogue-1).getName(), dialogue.getLine(countDialogue-1).getText(), false);
@@ -38,14 +48,27 @@ public class NPCObject : ScriptableObject {
         }
     }
 
+
+    /// <summary>
+    /// 
+    /// </summary>
     public void EndLine() {
         ScreenTexts.SetDialoguePrompt(true);
         countDialogue++;
     }
 
+
+    /// <summary>
+    /// 
+    /// </summary>
     private void LoadPM() {
         pm = GameObject.Find("Player").gameObject.GetComponent<PlayerMovement>();
     }
 
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public string getName() { return nickname; }
 }

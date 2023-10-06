@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 331133216477795108}
   - component: {fileID: 7570669666279798038}
+  - component: {fileID: 9123391716516090690}
   m_Layer: 0
   m_Name: InputPrompt
   m_TagString: Untagged
@@ -25,13 +26,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7425429410228721369}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.008883564, z: 0, w: 0.99996054}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.70000005, y: 0.7, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: -1.018, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7570669666279798038
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -84,3 +85,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &9123391716516090690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7425429410228721369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22593bc23bd80d34d9e847415732c734, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  released_sprite: {fileID: 21300000, guid: 2bcd2e4ef08178f4695fb5ac09122e92, type: 3}
+  clicked_sprite: {fileID: 21300000, guid: 61c6b02b249225944b9174e9dc2936af, type: 3}
+  promptHeight: 1
+  promptVisible: 1
